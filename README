@@ -1,0 +1,13 @@
+# mmLogInfo.pas
+Molecular modeling log info extractor
+
+First version on GitHub built from old personal files (mmLogInfo.pp, version 0.1.6)
+
+This program extracts selected information form output or log files produced by computational chemistry packages. It generally creates scripts to load, visualize, or analyze calculation results in VMD or other programs.
+
+Files in the repository:
+
+README: this file.
+src/mmLogInfo.pp: source code to be compiled using the freepascal compiler.
+
+This program requires freepascal units ioDrv.pp and condText.pp, but I still don't know how to call them on GitHub...
