@@ -1233,4 +1233,3 @@ begin   {*** program mmLogInfo ***}
 
   mmLogInfo_finish;
 end.
-
