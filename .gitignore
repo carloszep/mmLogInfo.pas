@@ -1,0 +1,5 @@
+# ignore compiled .o and .ppu files
+*.o
+*.ppu
+# ignore compiled binary
+latest/mmLogInfo
