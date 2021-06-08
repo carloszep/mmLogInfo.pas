@@ -718,7 +718,7 @@ procedure namdEnergies (logFile : string; var namdRI : rec_namdLogInfo);
       iml.infoMsg (0, 1, name +
                   'Extracting trajectory energies from file: ' + logFile);
     nEnergies := WordCount(namdRI.eTitle, [' ']);
-    if FileExists('dat') then   {creating dat folder}
+    if DirectoryExists('dat') then   {creating dat folder}
       iml.infoMsg(0,2,name+'dat folder already exists. Using it for output.')
     else
       begin
