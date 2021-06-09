@@ -158,7 +158,7 @@ uses
 const
   mmLogInfo_name = 'mmLogInfo';
   mmLogInfo_version = '0.1.6';
-  maxDcdSizeGB = 3.5;
+  maxDcdSizeGB = 3.2;
 
 type
   strLogLine = AnsiString;
