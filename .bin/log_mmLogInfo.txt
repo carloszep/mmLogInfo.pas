@@ -1,0 +1,9 @@
+mmLogInfo-v.0.1.6: Info: setOutputLevel: Setting outputLevel to: 2
+mmLogInfo-v.0.1.6: Info: mmLogInfo_init: sending info messages from condText unit to the current log file
+mmLogInfo-v.0.1.6: Info: mmLogInfo_init: Searching for external user options.
+mmLogInfo-v.0.1.6: Info: mmLogInfo_init: mmLogInfo_userOpts.ct file not found.
+mmLogInfo-v.0.1.6: Error: mmLogInfo_init: Invalid number of parameters.
+mmLogInfo-v.0.1.6: Info: mmLoginfo_finish: finalizing userOpts object.
+mmLogInfo-v.0.1.6: Info: condText: finish: Finalizating the object condText.
+mmLogInfo-v.0.1.6: Info: mmLoginfo_finish: unlinking condText log file.
+mmLogInfo-v.0.1.6: Info: mmLogInfo_finish: ending program...
