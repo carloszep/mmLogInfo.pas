@@ -874,7 +874,7 @@ procedure namdLogTrajInfo;
           outDev('global trajInfo selInfo ' + trajName + '_id');
           outDev('');
           outDev('# loading library anMD');
-          outDev('foreach lib {anMD} {');
+          outDev('foreach lib {userInfo anMD} {');
           outDev('  if {![info exists "${lib}_version"]} {');
           outDev
             ('    puts "sourcing: ${tclScriptPath}${lib}/latest/${lib}.tcl"');
