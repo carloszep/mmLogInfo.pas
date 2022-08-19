@@ -19,7 +19,8 @@
 |      -dlgRead_name :- ;
 |      -dlgRead_version :- ;;
 |    -types :- ;
-|    -vars :- ;
+|    -vars :
+|      -ulog :-object to manage log info messages ;;
 |    -functions and procedures :- ;
 |      -dlgRead_init :- ;
 |      -dlgRead_finish :- ;
@@ -50,19 +51,19 @@ procedure dlgRead_finish;
 
 {
 |  -implementation section :
-|    -functions and procedures :- ;;;
+|    -functions and procedures :
 }
 implementation
 
 
 {|-procedure dlgRead_test (testOpt: string) :
- |  -performs unit tests ;;}
+ |  -performs unit tests ;}
 procedure dlgRead_test (testOpt: string);
   begin
   end;
 
 {|-procedure dlgRead_init :
- |  -performs all initialization operations of the unit ;;}
+ |  -performs all initialization operations of the unit ;}
 procedure dlgRead_init;
   begin
     ulog.init;
@@ -72,13 +73,13 @@ procedure dlgRead_init;
   end;
 
 {|-procedure dlgRead_finish :
- |  -finalizes the unit ;;}
+ |  -finalizes the unit ;;;}
 procedure dlgRead_finish;
   begin
     ulog.finish;
   end;
 
-
+{|  -dlgRead unit body :- ;;}
 
 begin   {unit dlgRead}
   dlgRead_init
