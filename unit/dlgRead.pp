@@ -4,7 +4,15 @@
 |    -freepascal unit to read and extract information from
 |     _ Autodock 4.2 .dlg files .
 |    -intended to be used by the mmLogInfo program .
-|    -.dlg file info... ;
+|    -.dlg file info... :
+|      -relevant information :
+|        -program version :
+|          -example line :
+|            -"          AutoDock 4.2 Release 4.2.6" ;;
+|        -grid center :
+|          -example line :
+|            -"Coordinates of Central Grid Point of Maps 
+|             _=     (4.620, 66.120, 62.720)" ;;;;;
 |  -version :-0.0.1 ;
 |  -authors :-Carlos Z. Gómez Castro ;
 |  -version information :
@@ -41,6 +49,13 @@ const
   dlgRead_version = '0.0.1';
 
 type
+  strLogLine = AnsiString;
+  strToken = string;
+  rec_dlgInfo = record
+    pwd: strLogLine;
+    fileName: strToken;
+    
+  end;
 
 var
   ulog : obj_infoMsg;
