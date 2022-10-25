@@ -97,7 +97,22 @@
 |    -constants :
 |      -dlgRead_name :- ;
 |      -dlgRead_version :- ;;
-|    -types :- ;
+|    -types :
+|      -strLogLine :- ;
+|      -strToken :- ;
+|      -rec_dockedModel :- ;
+|      -rec_dlgInfo :
+|        -record to store information from a dlg file .
+|        -dlgName :- ;
+|        -dlgPath :- ;
+|        -dpfName :- ;
+|        -dpfPath :- ;
+|        -gridSpacing :- ;
+|        -gridXpoints :- ;
+|        -gridYpoints :- ;
+|        -gridZpoints :- ;
+|        -ga_run :- ;
+|        - ;
 |    -vars :
 |      -ulog :-object to manage log info messages ;;
 |    -functions and procedures :- ;
@@ -122,10 +137,19 @@ const
 type
   strLogLine = AnsiString;
   strToken = string;
-  rec_dlgInfo = record
-    pwd: strLogLine;
-    fileName: strToken;
+  rec_dockedModel = record
     
+  end;
+  rec_dlgInfo = record
+    dlgName: strToken;
+    dlgPath: strToken;
+    dpfName: strToken;
+    dpfPath: strToken;
+    gridSpacing: strToken;
+    gridXpoints: strToken;
+    gridYpoints: strToken;
+    gridZpoints: strToken;
+    ga_run: strToken;
   end;
 
 var
