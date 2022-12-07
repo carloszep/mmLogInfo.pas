@@ -112,8 +112,8 @@
 |      -rec_dlgInfo :
 |        -record to store information from a dlg file .
 |        -basePath :- ;
-|        -dlgName :- ;
 |        -dlgPath :- ;
+|        -dlgName :- ;
 |        -dpfName :- ;
 |        -dpfPath :- ;
 |        -gridSpacing :- ;
@@ -151,8 +151,8 @@ type
   end;
   rec_dlgInfo = record
     basePath: strToken;
-    dlgName: strToken;
     dlgPath: strToken;
+    dlgName: strToken;
     dpfName: strToken;
     dpfPath: strToken;
     gridSpacing: strToken;
@@ -165,6 +165,9 @@ type
 var
   ulog : obj_infoMsg;
 
+procedure dlgInfo_recInit (var dlgInfo: rec_dlgInfo);
+procedure dlgReadFile (basePath,filePath,fileName: string;
+                       var dlgInfo: rec_dlgInfo);
 
 procedure dlgRead_test (testOpt: string);
 procedure dlgRead_init;
@@ -178,18 +181,54 @@ procedure dlgRead_finish;
 }
 implementation
 
+
+{|-procedure dlgInfo_recInit (var dlgInfo: rec_dlgInfo) :
+ |  -initializes a rec_dlgInfo record ;}
+procedure dlgInfo_recInit (var dlgInfo: rec_dlgInfo);
+  var
+    procName: string;
+  begin
+    procName := 'dlgInfo_recInit';
+    ulog.infoMsg (0,2,procName+': initializing record dlgInfo...');
+    with dlgInfo do
+      begin
+        basePath := '';
+        dlgPath := '';
+        dlgName := '';
+        dpfName := '';
+        dpfPath := '';
+        gridSpacing := '';
+        gridXpoints := '';
+        gridYpoints := '';
+        gridZpoints := '';
+        ga_run := '';
+        {check for external user options...}
+      end;
+  end;   {dlgInfo_recInit}
+
 {|-procedure dlgReadFile
  | _ (basePath,filePath,fileName: string; var dlgInfo: rec_dlgInfo) :
  |  -reads and process a .dlg file extracting information to dlgInfo .
  |  -arguments :
  |    -basePath :
- |      -directory path sufix to be added to the filePath ;
+ |      -directory path sufix to be prepended to the filePath .
+ |      -generally ending with "/" .
+ |      -acceptable values :
+ |        -"", "./" .
+ |        -directory path acceptable for the OS ;
+ |      -examples :- ;;
  |    -filePath :
  |      -absolute or relative directory path where the .dlg file is located .
- |      -generally ending with "/" ;
+ |      -generally ending with "/" .
+ |      -acceptable values :
+ |        -"", "./" .
+ |        -directory path acceptable for the OS ;
+ |      -examples :- ;;
  |    -fileName :
  |      -name of the .dlg file to be processed stored in the 'filePath' ;
- |    -dlgInfo :- ;;;}
+ |    -dlgInfo :
+ |      -record storing all relevant information from the .dlg file .
+ |      -must be already initializaed ;;;}
 procedure dlgReadFile (basePath,filePath,fileName: string;
                        var dlgInfo: rec_dlgInfo);
   begin
