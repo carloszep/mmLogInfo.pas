@@ -4,6 +4,10 @@
 |    -freepascal unit to read and extract information from
 |     _ Autodock 4.2 .dlg files .
 |    -intended to be used by the mmLogInfo program .
+|    -purpose and features :
+|      -extract information from a single or a group of .dlg files to build a
+|       _ script for analysis/visualization programs such as VMD .
+|      -the relevant information is stored in an array molInfo within vmd ;
 |    -.dlg file info... :
 |      -relevant information (example lines) :
 |        -program version :
@@ -90,7 +94,11 @@
 |    -date :-2022-08-18.Thr ;
 |    -status :-unfinished ;
 |    -implementing in this version :
-|      -a similar structure and design as the mmLogInfo program ;;
+|      -a similar structure and design as the mmLogInfo program ;
+|    -notes for future versions :
+|      -a new array could be used to store the lig-rec info instead of molInfo .
+|      -ligInfo record :
+|        -... ;;;
 |  -interface section :
 |    -uses :
 |      -sysutils, strutils, ioDrv, condText ;
@@ -103,6 +111,7 @@
 |      -rec_dockedModel :- ;
 |      -rec_dlgInfo :
 |        -record to store information from a dlg file .
+|        -basePath :- ;
 |        -dlgName :- ;
 |        -dlgPath :- ;
 |        -dpfName :- ;
@@ -141,6 +150,7 @@ type
     
   end;
   rec_dlgInfo = record
+    basePath: strToken;
     dlgName: strToken;
     dlgPath: strToken;
     dpfName: strToken;
@@ -155,8 +165,11 @@ type
 var
   ulog : obj_infoMsg;
 
+
 procedure dlgRead_test (testOpt: string);
 procedure dlgRead_init;
+procedure dlgRead_iniUserOptions;
+procedure dlgRead_rtUserOptions;
 procedure dlgRead_finish;
 
 {
@@ -165,6 +178,22 @@ procedure dlgRead_finish;
 }
 implementation
 
+{|-procedure dlgReadFile
+ | _ (basePath,filePath,fileName: string; var dlgInfo: rec_dlgInfo) :
+ |  -reads and process a .dlg file extracting information to dlgInfo .
+ |  -arguments :
+ |    -basePath :
+ |      -directory path sufix to be added to the filePath ;
+ |    -filePath :
+ |      -absolute or relative directory path where the .dlg file is located .
+ |      -generally ending with "/" ;
+ |    -fileName :
+ |      -name of the .dlg file to be processed stored in the 'filePath' ;
+ |    -dlgInfo :- ;;;}
+procedure dlgReadFile (basePath,filePath,fileName: string;
+                       var dlgInfo: rec_dlgInfo);
+  begin
+  end;   {dlgReadFile}
 
 {|-procedure dlgRead_test (testOpt: string) :
  |  -performs unit tests ;}
@@ -180,7 +209,20 @@ procedure dlgRead_init;
     ulog.setInfoMsgName ('dlgRead');
     ulog.setOutputDevice (c_outdev_screen,'','');
     {code for reading external user options}
+    dlgRead_extUserOptions;
   end;
+
+{|-procedure dlgRead_iniUserOptions :
+ |  -checks for initial external/config/input files with user options ;}
+procedure dlgRead_iniUserOptions;
+  begin
+  end;   {dlgRead_iniUserOptions}
+
+{|-procedure dlgRead_rtUserOptions :
+ |  -experimental procedure to input external user option in run time ;}
+procedure dlgRead_rtUserOptions;
+  begin
+  end;   {dlgRead_rtUserOptions}
 
 {|-procedure dlgRead_finish :
  |  -finalizes the unit ;;;}
