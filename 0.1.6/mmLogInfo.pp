@@ -152,6 +152,8 @@
 }
 program mmLogInfo;
 
+{$H+}
+
 uses
   sysutils, strutils, ioDrv, condText;
 
