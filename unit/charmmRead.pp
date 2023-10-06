@@ -85,6 +85,7 @@ procedure charmmRead_init;
     ulog.setInfoMsgName ('charmmRead');
     ulog.setOutputDevice (c_outdev_screen,'','');
     {code for reading external user options}
+    
   end;
 
 {
@@ -132,7 +133,7 @@ procedure write_DelPhi_crg-siz (inpCTFileName : strToken);
 |          -interpretates user input through an external .ct file .
 |          -external user file (in .ct format) :
 |            -'charmmRead_extUserOptions.ct' .
-|            -the file is read as initialization time by proc charmmRead_init ;
+|            -the file is read at initialization time by proc charmmRead_init ;
 |          -the interpreter is activated if the external user options .ct file
 |           _ contains a node 'charmmRead_interpreter' :
 |            -then the cont list is tried to be interpreted node by node ;;
