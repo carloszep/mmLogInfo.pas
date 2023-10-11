@@ -1,5 +1,5 @@
 |-charmmRead_interpreter :
-|  -write_DelPhi_crg_siz :
+|  -genDelPhiParam :
 |    -psfFileName :
 |      -1brs.ab.psf ;
 |    -parFiles :

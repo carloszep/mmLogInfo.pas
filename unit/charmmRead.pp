@@ -8,16 +8,15 @@
 |    -created :
 |      -2023-10-05.Wed ;
 |    -modified :
-|      -2023-10-10.Tue ;;
+|      -2023-10-11.Wed ;;
 |  -code repositories :
 |    -GitHub: https://github.com/carloszep/mmLogInfo.pas ;
 |  -version :
-|    -0.0.1 ;
+|    -0.0.2 ;
 |  -version information :
 |    -changes implemented :
-|      -initial definitions ;
+|      -external user options at initialization time ;
 |    -to do list :
-|      -create all initial definitions to run .
 |      -to implement test procedures ;;
 }
 
@@ -33,8 +32,8 @@
 |        -strLogLine .
 |        -strToken ;
 |      -interface procedures .
-|        -charmmRead_init .
-|        -writeDelPhiCRG ;;
+|        -genDelPhiParam .
+|        -charmmRead_interpreter ;;
 }
 unit charmmRead;
 
@@ -47,51 +46,113 @@ uses
 
 const
   charmmRead_name = 'charmmRead';
-  charmmRead_version = '0.0.1';
+  charmmRead_version = '0.0.2';
 
 type
   strLogLine = AnsiString;
   strToken = string;
 
 
-procedure write_DelPhi_crg_siz (ctInp : obj_condText; title : p_CTnode);
+procedure genDelPhiParam (ctInp : obj_condText; title : p_CTnode);
+procedure charmmRead_interpreter (usrCommands : obj_condText; title : p_CTnode);
 
 {
 |    -implementation section :
-|        -var (unit variables) :
-|          -ulog :
-|            -unit log (obj_infoMsg) ;
-|          -userOptsFile :
-|            -name of the external .ct file for user option used by this unit .
-|            -predefined name: 'charmmRead_extUserOptions.ct' ;
-|          -userOpts :
-|            -obj_condText with the contents of the userOptsFile ;;
+|      -const (internal unit constants) :
+|        -extUsrOptsDir :
+|          -path/directory to look for the 'extUsrOptsFile' .
+|          -dafault value :
+|            -'' ;;
+|        -extUsrOptsFile  :
+|          -name of the 'extUsrOptsFile' .
+|          -condText file (.ct format) with unit opts read at initialization
+|           _ time .
+|          -default_value :
+|            -'charmmRead_extUsrOpts.ct' ;;;
+|      -var (unit variables) :
+|        -CRlog :
+|          -unit log (obj_infoMsg) ;
+|        -userOptsFile :
+|          -name of the external .ct file for user option used by this unit .
+|          -predefined name: 'charmmRead_extUserOptions.ct' ;
+|        -userOpts :
+|          -obj_condText with the contents of the userOptsFile ;;
 |      -procedures and function :
 }
 implementation
 
 const
-  max_nFileList = 20;
+  extUsrOptsDir = '';
+  extUsrOptsFile = 'charmmRead_extUsrOpts.ct';
 
 var
-  ulog : obj_infoMsg;
+  CRlog : obj_infoMsg;
+  extUsrOpts : obj_condText;
 
 {
 |        -procedure charmmRead_init; :
-|          -initializes the charmmRead unit ;
+|          -initializes the charmmRead unit .
+|          -internal procedures :- ;;
 }
 procedure charmmRead_init;
-  begin
-    ulog.init;
-    ulog.setInfoMsgName ('charmmRead');
-    ulog.setOutputDevice (c_outdev_screen,'','');
-    ulog.setOutputLevel (c_outLvl_detailed);
-    {code for reading external user options}
-{    CTlog.linkExtDev (ulog);}
-  end;
+  var
+    nodeFound : p_CTnode;
+{
+|            -procedure printHelp; :
+|              -printing help messages to the screen ;
+}
+  procedure printHelp;
+    begin
+    end;   {printHelp}
 
 {
-|        -procedure write_DelPhi_crg_siz (ctInp : obj_condText;
+|            -procedure extUsrOpt_globalOptions; :
+|              -reads global options from extUsrOpts file at
+|               _ initialization time .
+|              -intended to change the behavior of the charmmRead unit
+|               _ without recompiling ;
+}
+  procedure extUsrOpts_globalOptions;
+    begin
+    end;   {extUsrOpts_globalOptions}
+
+  begin
+    CRlog.init;
+    CRlog.setInfoMsgName ('charmmRead');
+    CRlog.setOutputDevice (c_outdev_screen,'','');
+    CRlog.setOutputLevel (c_outLvl_moderated);
+{    CTlog.linkExtDev (CRlog);}
+{reading external user options}
+    extUsrOpts.init;
+    if FileExists(extUsrOptsDir+extUsrOptsFile) then
+      begin
+        CRlog.infoMsg (0,1,'init: external user options file found: ' +
+                           extUsrOptsDir+extUsrOptsFile);
+        extUsrOpts.open (extUsrOptsDir+extUsrOptsFile, 'I');
+{checks for globalOptions}
+        nodeFound := nil;
+        nodeFound := extUsrOpts.findTextRec (nil, 'charmmRead_globalOptions');
+        if nodeFound <> nil then
+          begin   {pending to implement reading global options}
+            
+          end;
+{checks for interpreter commands}
+        nodeFound := nil;
+        nodeFound := extUsrOpts.findTextRec (nil, 'charmmRead_interpreter');
+        if nodeFound <> nil then
+          begin
+            charmmRead_interpreter (extUsrOpts, nodeFound);
+          end;
+      end
+    else
+      begin
+        CRlog.infoMsg (0,2,'init: external user options file not found.');
+
+      end;
+  end;   {charmmRead_init}
+
+{
+|        -procedure genDelPhiParam (ctInp : obj_condText;
 |                                       _ title : p_CTnode); :
 |          -creates DelPhi .crg and .siz files from .psf and .par files .
 |          -detects all unique resname/atomname pairs from the .psf file
@@ -123,11 +184,14 @@ procedure charmmRead_init;
 |                -strDir :
 |                  -struct/ ;
 |                -parDir :
-|                  -toppar/delphi/ ;;;;
+|                  -toppar/delphi/ ;;;
+|            -title :
+|              -node containing (as cont list) the search field nodes
+|               _ refering to the options considered by this proc ;;
 |          -notes :
 |            - ;;
 }
-procedure write_DelPhi_crg_siz (ctInp : obj_condText; title : p_CTnode);
+procedure genDelPhiParam (ctInp : obj_condText; title : p_CTnode);
   var
     psfFile, outPrefix, strDir, parDir, parFile : strToken;
     resName, atmName, atmCharge, atmType, atmSize : strToken;
@@ -141,7 +205,6 @@ procedure write_DelPhi_crg_siz (ctInp : obj_condText; title : p_CTnode);
     ctDB: obj_condText;
 
   begin
-    ulog.infoMsg (0,1, 'charmmRead: Starting procedure...');
 {initialization}
     nAtom := 0;
     nAtomStr := '';
@@ -164,7 +227,7 @@ procedure write_DelPhi_crg_siz (ctInp : obj_condText; title : p_CTnode);
     parNode := ctInp.findText (title, 'parFiles');
     if parNode = nil then
       begin
-        ulog.infoMsg (2,1,'write_DelPhi_crg_siz: no parameter files specified');
+        CRlog.infoMsg (2,1,'genDelPhiParam: no parameter files specified');
         exit;
       end
     else
@@ -173,18 +236,18 @@ procedure write_DelPhi_crg_siz (ctInp : obj_condText; title : p_CTnode);
         while parNode <> nil do
           begin
             parFile := parNode^.CTstr;
-            ulog.infoMsg (0,2,'parameter file: '+parDir+parFile);
+            CRlog.infoMsg (0,2,'parameter file: '+parDir+parFile);
             if FileExists (parDir+parFile) then
               begin
                 assign (par, parDir+parFile);
 {$I-}           reset (par); {$I+}
                 if IOresult <> 0 then
                   begin
-                    ulog.infoMsg (2,1,'write_DelPhi_crg_siz: unable to read parameter file!');
+                    CRlog.infoMsg (2,1,'genDelPhiParam: unable to read parameter file!');
                     exit;
                   end
                 else
-                  ulog.infoMsg (0,1,'parameter file openned: '+parFile);
+                  CRlog.infoMsg (0,1,'parameter file openned: '+parFile);
                 finishRead := False;
                 readInp := False;
 {extracting size parameter to create a DB of atmType and atmSize}
@@ -232,7 +295,7 @@ procedure write_DelPhi_crg_siz (ctInp : obj_condText; title : p_CTnode);
               end
             else
               begin
-                ulog.infoMsg (2,1,'parameter file not found!!');
+                CRlog.infoMsg (2,1,'parameter file not found!!');
               end;
             parNode := parNode^.next;
           end;
@@ -244,11 +307,11 @@ procedure write_DelPhi_crg_siz (ctInp : obj_condText; title : p_CTnode);
 {$I-}   reset (psf); {$I+}
         if IOresult <> 0 then
           begin
-            ulog.infoMsg (2,1,'write_DelPhi_crg_siz: unable to read .psf file!');
+            CRlog.infoMsg (2,1,'genDelPhiParam: unable to read .psf file!');
             exit;
           end
         else
-          ulog.infoMsg (0,2,'write_DelPhi_crg_siz: reading .psf info');
+          CRlog.infoMsg (0,2,'genDelPhiParam: reading .psf info');
 {reading lines from .psf file}
         finishRead := False;
         while (not EoF(psf)) and (not finishRead) do
@@ -260,10 +323,10 @@ procedure write_DelPhi_crg_siz (ctInp : obj_condText; title : p_CTnode);
                 nAtomStr := ExtractWord (1, rline, [' ']);
                 val (nAtomStr, nAtom, code);
                 if code = 0 then
-                  ulog.infoMsg (0,3,'  number of atoms in .psf: '+nAtomStr)
+                  CRlog.infoMsg (0,3,'  number of atoms in .psf: '+nAtomStr)
                 else
                   begin
-                    ulog.infoMsg(0,1,'  unable to read nAtoms from psf');
+                    CRlog.infoMsg(0,1,'  unable to read nAtoms from psf');
                     exit;
                   end;
                 finishRead := True;
@@ -277,7 +340,7 @@ procedure write_DelPhi_crg_siz (ctInp : obj_condText; title : p_CTnode);
                     atmCharge := ExtractWord (7, rline, [' ']);
                     atmSize := ctDB.getFieldValue (typeNode, atmType);
                     if atmSize = '' then
-                      ulog.infoMsg(1,1,'  atmSize not found for type '+atmType);
+                      CRlog.infoMsg(1,1,'  atmSize not found for type '+atmType);
                     if resnameNode = nil then
                       begin   {resnameNode not found)}
                         if ctDB.empty then
@@ -338,7 +401,7 @@ procedure write_DelPhi_crg_siz (ctInp : obj_condText; title : p_CTnode);
       end
     else
       begin
-        ulog.infoMsg (2,1,'write_DelPhi_crg_siz: .psf file not found!');
+        CRlog.infoMsg (2,1,'genDelPhiParam: .psf file not found!');
       end;
     ctDB.print (ctDB.getRoot, 0, 0, 4, 2, 'tmp_paramDB.ct');
 {write output .crg parameter files for delphi}
@@ -359,47 +422,72 @@ procedure write_DelPhi_crg_siz (ctInp : obj_condText; title : p_CTnode);
 {move over resName and atmName lists     *** find a better way ***}
     while not CTlog.getError do
       begin
-        writeln ('entering resname: '+ctDB.getCurrStr);
         resName := ctDB.getCurrStr;
         CTlog.clearError;
         ctDB.gotoCont;   {move to nameNode}
         ctDB.gotoCont;   {move to first atmName}
         while not CTlog.getError do
           begin
-            writeln ('entering name: '+ctDB.getCurrStr);
             atmName := ctDB.getCurrStr;
             atmType := ctDB.getFieldValue (ctDB.getCurrPos, 'type');
             atmCharge := ctDB.getFieldValue (ctDB.getCurrPos, 'charge');
             atmSize := ctDB.getFieldValue (ctDB.getCurrPos, 'size');
 
-            writeln (outCrg, atmName, resName:(9-Length(atmName)), atmCharge:15);
-            writeln (outSiz, atmName, resname:(9-Length(atmName)),'   ', atmSize);
+            writeln (outCrg,atmName,resName:(9-Length(atmName)),atmCharge:15);
+            writeln (outSiz,atmName,resname:(9-Length(atmName)),'   ',atmSize);
 
             CTlog.clearError;
             ctDB.gotoNext;
           end;
         ctDB.gotoTitle;   {move to the nameNode}
         ctDB.gotoTitle;   {move to the resName}
-        writeln ('returning resname title: '+ctDB.getCurrStr);
         CTlog.clearError;
         ctDB.gotoNext;
       end;
     close (outCrg);
     close (outSiz);
-  end;   {write_DelPhi_crg_siz}
+  end;   {genDelPhiParam}
 
 {
-|        -procedure charmmRead_interpreter; :
+|        -procedure charmmRead_interpreter (usrCommands : obj_condText;
+|                                         _ title : p_CTnode); :
 |          -interpretates user input through an external .ct file .
-|          -external user file (in .ct format) :
-|            -'charmmRead_extUserOptions.ct' .
-|            -the file is read at initialization time by proc charmmRead_init ;
-|          -the interpreter is activated if the external user options .ct file
-|           _ contains a node 'charmmRead_interpreter' :
-|            -then the cont list is tried to be interpreted node by node ;;
+|          -arguments :
+|            -usrCommands :
+|              -condText object containing a 'charmmRead_interpreter' node ;
+|            -title :
+|              -pointer to the 'charmmRead_interpreter' node in usrCommands ;;
+|          -notes :
+|            -external user options file (in .ct format) :
+|              -fixed name: 'charmmRead_usrCommands.ct' .
+|              -the file is read at initialization time by charmmRead_init ;
+|            -the interpreter is activated if the external user options file
+|             _ contains a node 'charmmRead_interpreter' :
+|              -then the cont list is tried to be interpreted node by node ;;
 }
-procedure charmmRead_interpreter;
+procedure charmmRead_interpreter (usrCommands : obj_condText; title : p_CTnode);
+  var
+    command : strToken;
+    optNode : p_CTnode;
+
   begin
+    CRlog.infoMsg (0,1,'charmmRead_interpreter: interpreting command list...');
+    usrCommands.gotoPos (title);
+    CTlog.clearError;
+    usrCommands.gotoCont;
+    while not CTlog.getError do
+      begin
+        command := usrCommands.getCurrStr;
+        optNode := usrCommands.getCurrPos;
+        CRlog.infoMsg (0,2,'  command: '+command);
+        case LowerCase(command) of
+            'gendelphiparam' : genDelPhiParam (usrCommands, optNode);
+            else
+              CRlog.infoMsg (1,2,'CR_commInterp: command not found: '+command);
+          end;
+        CTlog.clearError;
+        usrCommands.gotoNext;
+      end;
   end;   {charmmRead_interpreter}
 
 begin
