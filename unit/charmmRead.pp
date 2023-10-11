@@ -85,8 +85,9 @@ procedure charmmRead_init;
     ulog.init;
     ulog.setInfoMsgName ('charmmRead');
     ulog.setOutputDevice (c_outdev_screen,'','');
+    ulog.setOutputLevel (c_outLvl_detailed);
     {code for reading external user options}
-    
+{    CTlog.linkExtDev (ulog);}
   end;
 
 {
@@ -135,11 +136,12 @@ procedure write_DelPhi_crg_siz (ctInp : obj_condText; title : p_CTnode);
     code : word;
     psf, par : text;
     rline : strLogLine;
-    finishRead : boolean;
+    finishRead, readInp : boolean;
     parNode, typeNode, resnameNode, nameNode, foundNode : p_CTnode;
     ctDB: obj_condText;
 
   begin
+    ulog.infoMsg (0,1, 'charmmRead: Starting procedure...');
 {initialization}
     nAtom := 0;
     nAtomStr := '';
@@ -171,7 +173,7 @@ procedure write_DelPhi_crg_siz (ctInp : obj_condText; title : p_CTnode);
         while parNode <> nil do
           begin
             parFile := parNode^.CTstr;
-            ulog.infoMsg (0,2,'parameter file: '+parNode^.CTstr);
+            ulog.infoMsg (0,2,'parameter file: '+parDir+parFile);
             if FileExists (parDir+parFile) then
               begin
                 assign (par, parDir+parFile);
@@ -180,52 +182,59 @@ procedure write_DelPhi_crg_siz (ctInp : obj_condText; title : p_CTnode);
                   begin
                     ulog.infoMsg (2,1,'write_DelPhi_crg_siz: unable to read parameter file!');
                     exit;
-                  end;
+                  end
+                else
+                  ulog.infoMsg (0,1,'parameter file openned: '+parFile);
                 finishRead := False;
+                readInp := False;
 {extracting size parameter to create a DB of atmType and atmSize}
-                while (not EoF(par)) or (not finishRead) do
+                while (not EoF(par)) and (not finishRead) do
                   begin
                     readln (par, rline);
                     if pos ('NONBONDED nbxmod', rline) > 0 then
                       begin
-                        while (not EoF(par)) or (not finishRead) do
+                        readInp := True;
+                        continue;
+                      end
+                    else if pos('NBFIX', rline) > 0 then
+                      begin
+                        finishRead := True;
+                        continue;
+                      end
+                    else if readInp and (rline <> '') then
+                      begin
+                        if (rline[1] <> ' ') and (rline[1] <> '!') then
                           begin
-                            readln (par, rline);
-                            if pos('NBFIX', rline) > 0 then
+                            atmType := ExtractWord (1, rline, [' ']);
+                            atmSize := ExtractWord (4, rline, [' ']);
+                            if typeNode = nil then
                               begin
-                                finishRead := True;
-                              end
-                            else if (rline[1] = ' ') or (rline[1] = '!') then
-                              continue
-                            else
-                              begin
-                                atmType := ExtractWord (1, rline, [' ']);
-                                atmSize := ExtractWord (4, rline, [' ']);
-                                if typeNode = nil then
-                                  begin
-                                    if ctDB.empty then
-                                      ctDB.addRoot ('size')
-                                    else
-                                      begin
-                                        ctDB.gotoRoot;
-                                        ctDB.addFirst ('size');
-                                      end;
-                                    ctDB.addCont ('type');
-                                    typeNode := ctDB.getCurrPos;
-                                    ctDB.addFieldValue (atmType, atmSize);
-                                  end
+                                if ctDB.empty then
+                                  ctDB.addRoot ('size')
                                 else
                                   begin
-                                    ctDB.gotoPos (typeNode);
-                                    ctDB.addFieldValue (atmType, atmSize);
+                                    ctDB.gotoRoot;
+                                    ctDB.addFirst ('size');
                                   end;
+                                ctDB.addCont ('type');
+                                typeNode := ctDB.getCurrPos;
+                                ctDB.addFieldValue (atmType, atmSize);
+                              end
+                            else
+                              begin
+                                ctDB.gotoPos (typeNode);
+                                ctDB.addFieldValue (atmType, atmSize);
                               end;
                           end;
                       end;
                   end;
                 close (par);
-                parNode := parNode^.next;
+              end
+            else
+              begin
+                ulog.infoMsg (2,1,'parameter file not found!!');
               end;
+            parNode := parNode^.next;
           end;
       end;
 {creates a DB with charges and sizes for atom names according to the psf file}
@@ -350,6 +359,8 @@ procedure charmmRead_interpreter;
   begin
   end;   {charmmRead_interpreter}
 
+begin
+  charmmRead_init;
 end.   {unit charmmRead}
 
 

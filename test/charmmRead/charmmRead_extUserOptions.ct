@@ -11,5 +11,5 @@
 |    -strDir :
 |      -struct/ ;
 |    -parDir :
-|      -toppar/delphi/ ;;;
+|      -toppar/namd/ ;;;
 |- ;

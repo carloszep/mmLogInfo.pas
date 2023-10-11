@@ -1,0 +1,1339 @@
+|-size :
+|  -type :
+|    -cutnb :-12.0 ;
+|    -C :-2.000000 ;
+|    -CA :-1.992400 ;
+|    -CC :-2.000000 ;
+|    -CD :-2.000000 ;
+|    -CE1 :-2.090000 ;
+|    -		! :-yin/adm ;
+|    -CE2 :-2.080000 ;
+|    -		! :-yin/adm ;
+|    -CP1 :-2.275000 ;
+|    -CP2 :-2.175000 ;
+|    -CP3 :-2.175000 ;
+|    -CPH1 :-1.800000 ;
+|    -CPH2 :-1.800000 ;
+|    -CS :-2.200000 ;
+|    -CPT :-1.860000 ;
+|    -CY :-1.990000 ;
+|    -CAI :-1.990000 ;
+|    -CT :-2.275 ;
+|    -CT1 :-2.000 ;
+|    -CT2 :-2.010 ;
+|    -CT2A :-2.010 ;
+|    -CT3 :-2.040 ;
+|    -H :-0.224500 ;
+|    -HA :-1.320000 ;
+|    -HB1 :-1.320000 ;
+|    -HB2 :-1.340000 ;
+|    -HE1 :-1.250000 ;
+|    -		! :-yin/adm ;
+|    -HE2 :-1.260000 ;
+|    -		! :-yin/adm ;
+|    -HC :-0.224500 ;
+|    -HP :-1.358200 ;
+|    -HR1 :-0.900000 ;
+|    -HR2 :-0.700000 ;
+|    -HR3 :-1.468000 ;
+|    -HS :-0.450000 ;
+|    -HA1 :-1.3400 ;
+|    -HA2 :-1.3400 ;
+|    -HA3 :-1.3400 ;
+|    -N :-1.850000 ;
+|    -NC2 :-1.850000 ;
+|    -NH1 :-1.850000 ;
+|    -NH2 :-1.850000 ;
+|    -NH3 :-1.850000 ;
+|    -NP :-1.850000 ;
+|    -NR1 :-1.850000 ;
+|    -NR2 :-1.850000 ;
+|    -NR3 :-1.850000 ;
+|    -NY :-1.850000 ;
+|    -O :-1.700000 ;
+|    -OB :-1.700000 ;
+|    -OC :-1.700000 ;
+|    -OH1 :-1.770000 ;
+|    -OS :-1.770000 ;
+|    -S :-2.000000 ;
+|    -SM :-1.975000 ;
+|    -SS :-2.200000 ;
+|    -cutnb :-12.0 ;
+|    -HT :-0.2245 ;
+|    -OT :-1.7682 ;
+|    -OX :-1.700000 ;
+|    -HX :-0.224500 ;
+|    -HPER :-0.2245 ;
+|    -OPER :-1.67423 ;
+|    -LIT :-1.2975 ;
+|    -SOD :-1.41075 ;
+|    -MG :-1.18500 ;
+|    -POT :-1.76375 ;
+|    -CAL :-1.367 ;
+|    -RUB :-1.90 ;
+|    -CES :-2.100 ;
+|    -BAR :-1.890 ;
+|    -ZN :-1.090000 ;
+|    -CAD :-1.357000 ;
+|    -CLA :-2.27 ;;;
+|-resname :
+|  -VAL :
+|    -name :
+|      -N :
+|        -type :-NH3 ;
+|        -charge :--0.300000 ;
+|        -size :-1.850000 ;;
+|      -HT1 :
+|        -type :-HC ;
+|        -charge :-0.330000 ;
+|        -size :-0.224500 ;;
+|      -HT2 :
+|        -type :-HC ;
+|        -charge :-0.330000 ;
+|        -size :-0.224500 ;;
+|      -HT3 :
+|        -type :-HC ;
+|        -charge :-0.330000 ;
+|        -size :-0.224500 ;;
+|      -CA :
+|        -type :-CT1 ;
+|        -charge :-0.210000 ;
+|        -size :-2.000 ;;
+|      -HA :
+|        -type :-HB1 ;
+|        -charge :-0.100000 ;
+|        -size :-1.320000 ;;
+|      -CB :
+|        -type :-CT1 ;
+|        -charge :--0.090000 ;
+|        -size :-2.000 ;;
+|      -HB :
+|        -type :-HA1 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -CG1 :
+|        -type :-CT3 ;
+|        -charge :--0.270000 ;
+|        -size :-2.040 ;;
+|      -HG11 :
+|        -type :-HA3 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HG12 :
+|        -type :-HA3 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HG13 :
+|        -type :-HA3 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -CG2 :
+|        -type :-CT3 ;
+|        -charge :--0.270000 ;
+|        -size :-2.040 ;;
+|      -HG21 :
+|        -type :-HA3 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HG22 :
+|        -type :-HA3 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HG23 :
+|        -type :-HA3 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -C :
+|        -type :-C ;
+|        -charge :-0.510000 ;
+|        -size :-2.000000 ;;
+|      -O :
+|        -type :-O ;
+|        -charge :--0.510000 ;
+|        -size :-1.700000 ;;
+|      -HN :
+|        -type :-H ;
+|        -charge :-0.310000 ;
+|        -size :-0.224500 ;;;;
+|  -ILE :
+|    -name :
+|      -N :
+|        -type :-NH1 ;
+|        -charge :--0.470000 ;
+|        -size :-1.850000 ;;
+|      -HN :
+|        -type :-H ;
+|        -charge :-0.310000 ;
+|        -size :-0.224500 ;;
+|      -CA :
+|        -type :-CT1 ;
+|        -charge :-0.070000 ;
+|        -size :-2.000 ;;
+|      -HA :
+|        -type :-HB1 ;
+|        -charge :-0.090000 ;
+|        -size :-1.320000 ;;
+|      -CB :
+|        -type :-CT1 ;
+|        -charge :--0.090000 ;
+|        -size :-2.000 ;;
+|      -HB :
+|        -type :-HA1 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -CG2 :
+|        -type :-CT3 ;
+|        -charge :--0.270000 ;
+|        -size :-2.040 ;;
+|      -HG21 :
+|        -type :-HA3 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HG22 :
+|        -type :-HA3 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HG23 :
+|        -type :-HA3 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -CG1 :
+|        -type :-CT2 ;
+|        -charge :--0.180000 ;
+|        -size :-2.010 ;;
+|      -HG11 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HG12 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -CD :
+|        -type :-CT3 ;
+|        -charge :--0.270000 ;
+|        -size :-2.040 ;;
+|      -HD1 :
+|        -type :-HA3 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HD2 :
+|        -type :-HA3 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HD3 :
+|        -type :-HA3 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -C :
+|        -type :-C ;
+|        -charge :-0.510000 ;
+|        -size :-2.000000 ;;
+|      -O :
+|        -type :-O ;
+|        -charge :--0.510000 ;
+|        -size :-1.700000 ;;;;
+|  -ASN :
+|    -name :
+|      -N :
+|        -type :-NH1 ;
+|        -charge :--0.470000 ;
+|        -size :-1.850000 ;;
+|      -HN :
+|        -type :-H ;
+|        -charge :-0.310000 ;
+|        -size :-0.224500 ;;
+|      -CA :
+|        -type :-CT1 ;
+|        -charge :-0.070000 ;
+|        -size :-2.000 ;;
+|      -HA :
+|        -type :-HB1 ;
+|        -charge :-0.090000 ;
+|        -size :-1.320000 ;;
+|      -CB :
+|        -type :-CT2 ;
+|        -charge :--0.180000 ;
+|        -size :-2.010 ;;
+|      -HB1 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HB2 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -CG :
+|        -type :-CC ;
+|        -charge :-0.550000 ;
+|        -size :-2.000000 ;;
+|      -OD1 :
+|        -type :-O ;
+|        -charge :--0.550000 ;
+|        -size :-1.700000 ;;
+|      -ND2 :
+|        -type :-NH2 ;
+|        -charge :--0.620000 ;
+|        -size :-1.850000 ;;
+|      -HD21 :
+|        -type :-H ;
+|        -charge :-0.320000 ;
+|        -size :-0.224500 ;;
+|      -HD22 :
+|        -type :-H ;
+|        -charge :-0.300000 ;
+|        -size :-0.224500 ;;
+|      -C :
+|        -type :-C ;
+|        -charge :-0.510000 ;
+|        -size :-2.000000 ;;
+|      -O :
+|        -type :-O ;
+|        -charge :--0.510000 ;
+|        -size :-1.700000 ;;;;
+|  -THR :
+|    -name :
+|      -N :
+|        -type :-NH1 ;
+|        -charge :--0.470000 ;
+|        -size :-1.850000 ;;
+|      -HN :
+|        -type :-H ;
+|        -charge :-0.310000 ;
+|        -size :-0.224500 ;;
+|      -CA :
+|        -type :-CT1 ;
+|        -charge :-0.070000 ;
+|        -size :-2.000 ;;
+|      -HA :
+|        -type :-HB1 ;
+|        -charge :-0.090000 ;
+|        -size :-1.320000 ;;
+|      -CB :
+|        -type :-CT1 ;
+|        -charge :-0.140000 ;
+|        -size :-2.000 ;;
+|      -HB :
+|        -type :-HA1 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -OG1 :
+|        -type :-OH1 ;
+|        -charge :--0.660000 ;
+|        -size :-1.770000 ;;
+|      -HG1 :
+|        -type :-H ;
+|        -charge :-0.430000 ;
+|        -size :-0.224500 ;;
+|      -CG2 :
+|        -type :-CT3 ;
+|        -charge :--0.270000 ;
+|        -size :-2.040 ;;
+|      -HG21 :
+|        -type :-HA3 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HG22 :
+|        -type :-HA3 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HG23 :
+|        -type :-HA3 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -C :
+|        -type :-C ;
+|        -charge :-0.510000 ;
+|        -size :-2.000000 ;;
+|      -O :
+|        -type :-O ;
+|        -charge :--0.510000 ;
+|        -size :-1.700000 ;;;;
+|  -PHE :
+|    -name :
+|      -N :
+|        -type :-NH1 ;
+|        -charge :--0.470000 ;
+|        -size :-1.850000 ;;
+|      -HN :
+|        -type :-H ;
+|        -charge :-0.310000 ;
+|        -size :-0.224500 ;;
+|      -CA :
+|        -type :-CT1 ;
+|        -charge :-0.070000 ;
+|        -size :-2.000 ;;
+|      -HA :
+|        -type :-HB1 ;
+|        -charge :-0.090000 ;
+|        -size :-1.320000 ;;
+|      -CB :
+|        -type :-CT2 ;
+|        -charge :--0.180000 ;
+|        -size :-2.010 ;;
+|      -HB1 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HB2 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -CG :
+|        -type :-CA ;
+|        -charge :-0.000000 ;
+|        -size :-1.992400 ;;
+|      -CD1 :
+|        -type :-CA ;
+|        -charge :--0.115000 ;
+|        -size :-1.992400 ;;
+|      -HD1 :
+|        -type :-HP ;
+|        -charge :-0.115000 ;
+|        -size :-1.358200 ;;
+|      -CE1 :
+|        -type :-CA ;
+|        -charge :--0.115000 ;
+|        -size :-1.992400 ;;
+|      -HE1 :
+|        -type :-HP ;
+|        -charge :-0.115000 ;
+|        -size :-1.358200 ;;
+|      -CZ :
+|        -type :-CA ;
+|        -charge :--0.115000 ;
+|        -size :-1.992400 ;;
+|      -HZ :
+|        -type :-HP ;
+|        -charge :-0.115000 ;
+|        -size :-1.358200 ;;
+|      -CD2 :
+|        -type :-CA ;
+|        -charge :--0.115000 ;
+|        -size :-1.992400 ;;
+|      -HD2 :
+|        -type :-HP ;
+|        -charge :-0.115000 ;
+|        -size :-1.358200 ;;
+|      -CE2 :
+|        -type :-CA ;
+|        -charge :--0.115000 ;
+|        -size :-1.992400 ;;
+|      -HE2 :
+|        -type :-HP ;
+|        -charge :-0.115000 ;
+|        -size :-1.358200 ;;
+|      -C :
+|        -type :-C ;
+|        -charge :-0.510000 ;
+|        -size :-2.000000 ;;
+|      -O :
+|        -type :-O ;
+|        -charge :--0.510000 ;
+|        -size :-1.700000 ;;;;
+|  -ASP :
+|    -name :
+|      -N :
+|        -type :-NH1 ;
+|        -charge :--0.470000 ;
+|        -size :-1.850000 ;;
+|      -HN :
+|        -type :-H ;
+|        -charge :-0.310000 ;
+|        -size :-0.224500 ;;
+|      -CA :
+|        -type :-CT1 ;
+|        -charge :-0.070000 ;
+|        -size :-2.000 ;;
+|      -HA :
+|        -type :-HB1 ;
+|        -charge :-0.090000 ;
+|        -size :-1.320000 ;;
+|      -CB :
+|        -type :-CT2A ;
+|        -charge :--0.280000 ;
+|        -size :-2.010 ;;
+|      -HB1 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HB2 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -CG :
+|        -type :-CC ;
+|        -charge :-0.620000 ;
+|        -size :-2.000000 ;;
+|      -OD1 :
+|        -type :-OC ;
+|        -charge :--0.760000 ;
+|        -size :-1.700000 ;;
+|      -OD2 :
+|        -type :-OC ;
+|        -charge :--0.760000 ;
+|        -size :-1.700000 ;;
+|      -C :
+|        -type :-C ;
+|        -charge :-0.510000 ;
+|        -size :-2.000000 ;;
+|      -O :
+|        -type :-O ;
+|        -charge :--0.510000 ;
+|        -size :-1.700000 ;;;;
+|  -GLY :
+|    -name :
+|      -N :
+|        -type :-NH1 ;
+|        -charge :--0.470000 ;
+|        -size :-1.850000 ;;
+|      -HN :
+|        -type :-H ;
+|        -charge :-0.310000 ;
+|        -size :-0.224500 ;;
+|      -CA :
+|        -type :-CT2 ;
+|        -charge :--0.020000 ;
+|        -size :-2.010 ;;
+|      -HA1 :
+|        -type :-HB2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.340000 ;;
+|      -HA2 :
+|        -type :-HB2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.340000 ;;
+|      -C :
+|        -type :-C ;
+|        -charge :-0.510000 ;
+|        -size :-2.000000 ;;
+|      -O :
+|        -type :-O ;
+|        -charge :--0.510000 ;
+|        -size :-1.700000 ;;;;
+|  -ALA :
+|    -name :
+|      -N :
+|        -type :-NH1 ;
+|        -charge :--0.470000 ;
+|        -size :-1.850000 ;;
+|      -HN :
+|        -type :-H ;
+|        -charge :-0.310000 ;
+|        -size :-0.224500 ;;
+|      -CA :
+|        -type :-CT1 ;
+|        -charge :-0.070000 ;
+|        -size :-2.000 ;;
+|      -HA :
+|        -type :-HB1 ;
+|        -charge :-0.090000 ;
+|        -size :-1.320000 ;;
+|      -CB :
+|        -type :-CT3 ;
+|        -charge :--0.270000 ;
+|        -size :-2.040 ;;
+|      -HB1 :
+|        -type :-HA3 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HB2 :
+|        -type :-HA3 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HB3 :
+|        -type :-HA3 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -C :
+|        -type :-C ;
+|        -charge :-0.510000 ;
+|        -size :-2.000000 ;;
+|      -O :
+|        -type :-O ;
+|        -charge :--0.510000 ;
+|        -size :-1.700000 ;;;;
+|  -TYR :
+|    -name :
+|      -N :
+|        -type :-NH1 ;
+|        -charge :--0.470000 ;
+|        -size :-1.850000 ;;
+|      -HN :
+|        -type :-H ;
+|        -charge :-0.310000 ;
+|        -size :-0.224500 ;;
+|      -CA :
+|        -type :-CT1 ;
+|        -charge :-0.070000 ;
+|        -size :-2.000 ;;
+|      -HA :
+|        -type :-HB1 ;
+|        -charge :-0.090000 ;
+|        -size :-1.320000 ;;
+|      -CB :
+|        -type :-CT2 ;
+|        -charge :--0.180000 ;
+|        -size :-2.010 ;;
+|      -HB1 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HB2 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -CG :
+|        -type :-CA ;
+|        -charge :-0.000000 ;
+|        -size :-1.992400 ;;
+|      -CD1 :
+|        -type :-CA ;
+|        -charge :--0.115000 ;
+|        -size :-1.992400 ;;
+|      -HD1 :
+|        -type :-HP ;
+|        -charge :-0.115000 ;
+|        -size :-1.358200 ;;
+|      -CE1 :
+|        -type :-CA ;
+|        -charge :--0.115000 ;
+|        -size :-1.992400 ;;
+|      -HE1 :
+|        -type :-HP ;
+|        -charge :-0.115000 ;
+|        -size :-1.358200 ;;
+|      -CZ :
+|        -type :-CA ;
+|        -charge :-0.110000 ;
+|        -size :-1.992400 ;;
+|      -OH :
+|        -type :-OH1 ;
+|        -charge :--0.540000 ;
+|        -size :-1.770000 ;;
+|      -HH :
+|        -type :-H ;
+|        -charge :-0.430000 ;
+|        -size :-0.224500 ;;
+|      -CD2 :
+|        -type :-CA ;
+|        -charge :--0.115000 ;
+|        -size :-1.992400 ;;
+|      -HD2 :
+|        -type :-HP ;
+|        -charge :-0.115000 ;
+|        -size :-1.358200 ;;
+|      -CE2 :
+|        -type :-CA ;
+|        -charge :--0.115000 ;
+|        -size :-1.992400 ;;
+|      -HE2 :
+|        -type :-HP ;
+|        -charge :-0.115000 ;
+|        -size :-1.358200 ;;
+|      -C :
+|        -type :-C ;
+|        -charge :-0.510000 ;
+|        -size :-2.000000 ;;
+|      -O :
+|        -type :-O ;
+|        -charge :--0.510000 ;
+|        -size :-1.700000 ;;;;
+|  -LEU :
+|    -name :
+|      -N :
+|        -type :-NH1 ;
+|        -charge :--0.470000 ;
+|        -size :-1.850000 ;;
+|      -HN :
+|        -type :-H ;
+|        -charge :-0.310000 ;
+|        -size :-0.224500 ;;
+|      -CA :
+|        -type :-CT1 ;
+|        -charge :-0.070000 ;
+|        -size :-2.000 ;;
+|      -HA :
+|        -type :-HB1 ;
+|        -charge :-0.090000 ;
+|        -size :-1.320000 ;;
+|      -CB :
+|        -type :-CT2 ;
+|        -charge :--0.180000 ;
+|        -size :-2.010 ;;
+|      -HB1 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HB2 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -CG :
+|        -type :-CT1 ;
+|        -charge :--0.090000 ;
+|        -size :-2.000 ;;
+|      -HG :
+|        -type :-HA1 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -CD1 :
+|        -type :-CT3 ;
+|        -charge :--0.270000 ;
+|        -size :-2.040 ;;
+|      -HD11 :
+|        -type :-HA3 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HD12 :
+|        -type :-HA3 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HD13 :
+|        -type :-HA3 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -CD2 :
+|        -type :-CT3 ;
+|        -charge :--0.270000 ;
+|        -size :-2.040 ;;
+|      -HD21 :
+|        -type :-HA3 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HD22 :
+|        -type :-HA3 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HD23 :
+|        -type :-HA3 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -C :
+|        -type :-C ;
+|        -charge :-0.510000 ;
+|        -size :-2.000000 ;;
+|      -O :
+|        -type :-O ;
+|        -charge :--0.510000 ;
+|        -size :-1.700000 ;;;;
+|  -GLN :
+|    -name :
+|      -N :
+|        -type :-NH1 ;
+|        -charge :--0.470000 ;
+|        -size :-1.850000 ;;
+|      -HN :
+|        -type :-H ;
+|        -charge :-0.310000 ;
+|        -size :-0.224500 ;;
+|      -CA :
+|        -type :-CT1 ;
+|        -charge :-0.070000 ;
+|        -size :-2.000 ;;
+|      -HA :
+|        -type :-HB1 ;
+|        -charge :-0.090000 ;
+|        -size :-1.320000 ;;
+|      -CB :
+|        -type :-CT2 ;
+|        -charge :--0.180000 ;
+|        -size :-2.010 ;;
+|      -HB1 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HB2 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -CG :
+|        -type :-CT2 ;
+|        -charge :--0.180000 ;
+|        -size :-2.010 ;;
+|      -HG1 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HG2 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -CD :
+|        -type :-CC ;
+|        -charge :-0.550000 ;
+|        -size :-2.000000 ;;
+|      -OE1 :
+|        -type :-O ;
+|        -charge :--0.550000 ;
+|        -size :-1.700000 ;;
+|      -NE2 :
+|        -type :-NH2 ;
+|        -charge :--0.620000 ;
+|        -size :-1.850000 ;;
+|      -HE21 :
+|        -type :-H ;
+|        -charge :-0.320000 ;
+|        -size :-0.224500 ;;
+|      -HE22 :
+|        -type :-H ;
+|        -charge :-0.300000 ;
+|        -size :-0.224500 ;;
+|      -C :
+|        -type :-C ;
+|        -charge :-0.510000 ;
+|        -size :-2.000000 ;;
+|      -O :
+|        -type :-O ;
+|        -charge :--0.510000 ;
+|        -size :-1.700000 ;;;;
+|  -HSD :
+|    -name :
+|      -N :
+|        -type :-NH1 ;
+|        -charge :--0.470000 ;
+|        -size :-1.850000 ;;
+|      -HN :
+|        -type :-H ;
+|        -charge :-0.310000 ;
+|        -size :-0.224500 ;;
+|      -CA :
+|        -type :-CT1 ;
+|        -charge :-0.070000 ;
+|        -size :-2.000 ;;
+|      -HA :
+|        -type :-HB1 ;
+|        -charge :-0.090000 ;
+|        -size :-1.320000 ;;
+|      -CB :
+|        -type :-CT2 ;
+|        -charge :--0.090000 ;
+|        -size :-2.010 ;;
+|      -HB1 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HB2 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -ND1 :
+|        -type :-NR1 ;
+|        -charge :--0.360000 ;
+|        -size :-1.850000 ;;
+|      -HD1 :
+|        -type :-H ;
+|        -charge :-0.320000 ;
+|        -size :-0.224500 ;;
+|      -CG :
+|        -type :-CPH1 ;
+|        -charge :--0.050000 ;
+|        -size :-1.800000 ;;
+|      -CE1 :
+|        -type :-CPH2 ;
+|        -charge :-0.250000 ;
+|        -size :-1.800000 ;;
+|      -HE1 :
+|        -type :-HR1 ;
+|        -charge :-0.130000 ;
+|        -size :-0.900000 ;;
+|      -NE2 :
+|        -type :-NR2 ;
+|        -charge :--0.700000 ;
+|        -size :-1.850000 ;;
+|      -CD2 :
+|        -type :-CPH1 ;
+|        -charge :-0.220000 ;
+|        -size :-1.800000 ;;
+|      -HD2 :
+|        -type :-HR3 ;
+|        -charge :-0.100000 ;
+|        -size :-1.468000 ;;
+|      -C :
+|        -type :-C ;
+|        -charge :-0.510000 ;
+|        -size :-2.000000 ;;
+|      -O :
+|        -type :-O ;
+|        -charge :--0.510000 ;
+|        -size :-1.700000 ;;;;
+|  -LYS :
+|    -name :
+|      -N :
+|        -type :-NH1 ;
+|        -charge :--0.470000 ;
+|        -size :-1.850000 ;;
+|      -HN :
+|        -type :-H ;
+|        -charge :-0.310000 ;
+|        -size :-0.224500 ;;
+|      -CA :
+|        -type :-CT1 ;
+|        -charge :-0.070000 ;
+|        -size :-2.000 ;;
+|      -HA :
+|        -type :-HB1 ;
+|        -charge :-0.090000 ;
+|        -size :-1.320000 ;;
+|      -CB :
+|        -type :-CT2 ;
+|        -charge :--0.180000 ;
+|        -size :-2.010 ;;
+|      -HB1 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HB2 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -CG :
+|        -type :-CT2 ;
+|        -charge :--0.180000 ;
+|        -size :-2.010 ;;
+|      -HG1 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HG2 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -CD :
+|        -type :-CT2 ;
+|        -charge :--0.180000 ;
+|        -size :-2.010 ;;
+|      -HD1 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HD2 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -CE :
+|        -type :-CT2 ;
+|        -charge :-0.210000 ;
+|        -size :-2.010 ;;
+|      -HE1 :
+|        -type :-HA2 ;
+|        -charge :-0.050000 ;
+|        -size :-1.3400 ;;
+|      -HE2 :
+|        -type :-HA2 ;
+|        -charge :-0.050000 ;
+|        -size :-1.3400 ;;
+|      -NZ :
+|        -type :-NH3 ;
+|        -charge :--0.300000 ;
+|        -size :-1.850000 ;;
+|      -HZ1 :
+|        -type :-HC ;
+|        -charge :-0.330000 ;
+|        -size :-0.224500 ;;
+|      -HZ2 :
+|        -type :-HC ;
+|        -charge :-0.330000 ;
+|        -size :-0.224500 ;;
+|      -HZ3 :
+|        -type :-HC ;
+|        -charge :-0.330000 ;
+|        -size :-0.224500 ;;
+|      -C :
+|        -type :-C ;
+|        -charge :-0.510000 ;
+|        -size :-2.000000 ;;
+|      -O :
+|        -type :-O ;
+|        -charge :--0.510000 ;
+|        -size :-1.700000 ;;
+|      -HT1 :
+|        -type :-HC ;
+|        -charge :-0.330000 ;
+|        -size :-0.224500 ;;
+|      -HT2 :
+|        -type :-HC ;
+|        -charge :-0.330000 ;
+|        -size :-0.224500 ;;
+|      -HT3 :
+|        -type :-HC ;
+|        -charge :-0.330000 ;
+|        -size :-0.224500 ;;;;
+|  -PRO :
+|    -name :
+|      -N :
+|        -type :-N ;
+|        -charge :--0.290000 ;
+|        -size :-1.850000 ;;
+|      -CD :
+|        -type :-CP3 ;
+|        -charge :-0.000000 ;
+|        -size :-2.175000 ;;
+|      -HD1 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HD2 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -CA :
+|        -type :-CP1 ;
+|        -charge :-0.020000 ;
+|        -size :-2.275000 ;;
+|      -HA :
+|        -type :-HB1 ;
+|        -charge :-0.090000 ;
+|        -size :-1.320000 ;;
+|      -CB :
+|        -type :-CP2 ;
+|        -charge :--0.180000 ;
+|        -size :-2.175000 ;;
+|      -HB1 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HB2 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -CG :
+|        -type :-CP2 ;
+|        -charge :--0.180000 ;
+|        -size :-2.175000 ;;
+|      -HG1 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HG2 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -C :
+|        -type :-C ;
+|        -charge :-0.510000 ;
+|        -size :-2.000000 ;;
+|      -O :
+|        -type :-O ;
+|        -charge :--0.510000 ;
+|        -size :-1.700000 ;;;;
+|  -SER :
+|    -name :
+|      -N :
+|        -type :-NH1 ;
+|        -charge :--0.470000 ;
+|        -size :-1.850000 ;;
+|      -HN :
+|        -type :-H ;
+|        -charge :-0.310000 ;
+|        -size :-0.224500 ;;
+|      -CA :
+|        -type :-CT1 ;
+|        -charge :-0.070000 ;
+|        -size :-2.000 ;;
+|      -HA :
+|        -type :-HB1 ;
+|        -charge :-0.090000 ;
+|        -size :-1.320000 ;;
+|      -CB :
+|        -type :-CT2 ;
+|        -charge :-0.050000 ;
+|        -size :-2.010 ;;
+|      -HB1 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HB2 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -OG :
+|        -type :-OH1 ;
+|        -charge :--0.660000 ;
+|        -size :-1.770000 ;;
+|      -HG1 :
+|        -type :-H ;
+|        -charge :-0.430000 ;
+|        -size :-0.224500 ;;
+|      -C :
+|        -type :-C ;
+|        -charge :-0.510000 ;
+|        -size :-2.000000 ;;
+|      -O :
+|        -type :-O ;
+|        -charge :--0.510000 ;
+|        -size :-1.700000 ;;
+|      -OT1 :
+|        -type :-OC ;
+|        -charge :--0.670000 ;
+|        -size :-1.700000 ;;
+|      -OT2 :
+|        -type :-OC ;
+|        -charge :--0.670000 ;
+|        -size :-1.700000 ;;;;
+|  -GLU :
+|    -name :
+|      -N :
+|        -type :-NH1 ;
+|        -charge :--0.470000 ;
+|        -size :-1.850000 ;;
+|      -HN :
+|        -type :-H ;
+|        -charge :-0.310000 ;
+|        -size :-0.224500 ;;
+|      -CA :
+|        -type :-CT1 ;
+|        -charge :-0.070000 ;
+|        -size :-2.000 ;;
+|      -HA :
+|        -type :-HB1 ;
+|        -charge :-0.090000 ;
+|        -size :-1.320000 ;;
+|      -CB :
+|        -type :-CT2A ;
+|        -charge :--0.180000 ;
+|        -size :-2.010 ;;
+|      -HB1 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HB2 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -CG :
+|        -type :-CT2 ;
+|        -charge :--0.280000 ;
+|        -size :-2.010 ;;
+|      -HG1 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HG2 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -CD :
+|        -type :-CC ;
+|        -charge :-0.620000 ;
+|        -size :-2.000000 ;;
+|      -OE1 :
+|        -type :-OC ;
+|        -charge :--0.760000 ;
+|        -size :-1.700000 ;;
+|      -OE2 :
+|        -type :-OC ;
+|        -charge :--0.760000 ;
+|        -size :-1.700000 ;;
+|      -C :
+|        -type :-C ;
+|        -charge :-0.510000 ;
+|        -size :-2.000000 ;;
+|      -O :
+|        -type :-O ;
+|        -charge :--0.510000 ;
+|        -size :-1.700000 ;;;;
+|  -TRP :
+|    -name :
+|      -N :
+|        -type :-NH1 ;
+|        -charge :--0.470000 ;
+|        -size :-1.850000 ;;
+|      -HN :
+|        -type :-H ;
+|        -charge :-0.310000 ;
+|        -size :-0.224500 ;;
+|      -CA :
+|        -type :-CT1 ;
+|        -charge :-0.070000 ;
+|        -size :-2.000 ;;
+|      -HA :
+|        -type :-HB1 ;
+|        -charge :-0.090000 ;
+|        -size :-1.320000 ;;
+|      -CB :
+|        -type :-CT2 ;
+|        -charge :--0.180000 ;
+|        -size :-2.010 ;;
+|      -HB1 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HB2 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -CG :
+|        -type :-CY ;
+|        -charge :--0.030000 ;
+|        -size :-1.990000 ;;
+|      -CD1 :
+|        -type :-CA ;
+|        -charge :--0.150000 ;
+|        -size :-1.992400 ;;
+|      -HD1 :
+|        -type :-HP ;
+|        -charge :-0.220000 ;
+|        -size :-1.358200 ;;
+|      -NE1 :
+|        -type :-NY ;
+|        -charge :--0.510000 ;
+|        -size :-1.850000 ;;
+|      -HE1 :
+|        -type :-H ;
+|        -charge :-0.370000 ;
+|        -size :-0.224500 ;;
+|      -CE2 :
+|        -type :-CPT ;
+|        -charge :-0.240000 ;
+|        -size :-1.860000 ;;
+|      -CD2 :
+|        -type :-CPT ;
+|        -charge :-0.110000 ;
+|        -size :-1.860000 ;;
+|      -CE3 :
+|        -type :-CAI ;
+|        -charge :--0.250000 ;
+|        -size :-1.990000 ;;
+|      -HE3 :
+|        -type :-HP ;
+|        -charge :-0.170000 ;
+|        -size :-1.358200 ;;
+|      -CZ3 :
+|        -type :-CA ;
+|        -charge :--0.200000 ;
+|        -size :-1.992400 ;;
+|      -HZ3 :
+|        -type :-HP ;
+|        -charge :-0.140000 ;
+|        -size :-1.358200 ;;
+|      -CZ2 :
+|        -type :-CAI ;
+|        -charge :--0.270000 ;
+|        -size :-1.990000 ;;
+|      -HZ2 :
+|        -type :-HP ;
+|        -charge :-0.160000 ;
+|        -size :-1.358200 ;;
+|      -CH2 :
+|        -type :-CA ;
+|        -charge :--0.140000 ;
+|        -size :-1.992400 ;;
+|      -HH2 :
+|        -type :-HP ;
+|        -charge :-0.140000 ;
+|        -size :-1.358200 ;;
+|      -C :
+|        -type :-C ;
+|        -charge :-0.510000 ;
+|        -size :-2.000000 ;;
+|      -O :
+|        -type :-O ;
+|        -charge :--0.510000 ;
+|        -size :-1.700000 ;;;;
+|  -ARG :
+|    -name :
+|      -N :
+|        -type :-NH1 ;
+|        -charge :--0.470000 ;
+|        -size :-1.850000 ;;
+|      -HN :
+|        -type :-H ;
+|        -charge :-0.310000 ;
+|        -size :-0.224500 ;;
+|      -CA :
+|        -type :-CT1 ;
+|        -charge :-0.070000 ;
+|        -size :-2.000 ;;
+|      -HA :
+|        -type :-HB1 ;
+|        -charge :-0.090000 ;
+|        -size :-1.320000 ;;
+|      -CB :
+|        -type :-CT2 ;
+|        -charge :--0.180000 ;
+|        -size :-2.010 ;;
+|      -HB1 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HB2 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -CG :
+|        -type :-CT2 ;
+|        -charge :--0.180000 ;
+|        -size :-2.010 ;;
+|      -HG1 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HG2 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -CD :
+|        -type :-CT2 ;
+|        -charge :-0.200000 ;
+|        -size :-2.010 ;;
+|      -HD1 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -HD2 :
+|        -type :-HA2 ;
+|        -charge :-0.090000 ;
+|        -size :-1.3400 ;;
+|      -NE :
+|        -type :-NC2 ;
+|        -charge :--0.700000 ;
+|        -size :-1.850000 ;;
+|      -HE :
+|        -type :-HC ;
+|        -charge :-0.440000 ;
+|        -size :-0.224500 ;;
+|      -CZ :
+|        -type :-C ;
+|        -charge :-0.640000 ;
+|        -size :-2.000000 ;;
+|      -NH1 :
+|        -type :-NC2 ;
+|        -charge :--0.800000 ;
+|        -size :-1.850000 ;;
+|      -HH11 :
+|        -type :-HC ;
+|        -charge :-0.460000 ;
+|        -size :-0.224500 ;;
+|      -HH12 :
+|        -type :-HC ;
+|        -charge :-0.460000 ;
+|        -size :-0.224500 ;;
+|      -NH2 :
+|        -type :-NC2 ;
+|        -charge :--0.800000 ;
+|        -size :-1.850000 ;;
+|      -HH21 :
+|        -type :-HC ;
+|        -charge :-0.460000 ;
+|        -size :-0.224500 ;;
+|      -HH22 :
+|        -type :-HC ;
+|        -charge :-0.460000 ;
+|        -size :-0.224500 ;;
+|      -C :
+|        -type :-C ;
+|        -charge :-0.510000 ;
+|        -size :-2.000000 ;;
+|      -O :
+|        -type :-O ;
+|        -charge :--0.510000 ;
+|        -size :-1.700000 ;;
+|      -OT1 :
+|        -type :-OC ;
+|        -charge :--0.670000 ;
+|        -size :-1.700000 ;;
+|      -OT2 :
+|        -type :-OC ;
+|        -charge :--0.670000 ;
+|        -size :-1.700000 ;;;;;;
