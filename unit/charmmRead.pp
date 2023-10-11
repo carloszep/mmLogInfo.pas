@@ -134,7 +134,7 @@ procedure write_DelPhi_crg_siz (ctInp : obj_condText; title : p_CTnode);
     nAtomStr, tmpStr : strToken;
     nAtom, a : longint;
     code : word;
-    psf, par : text;
+    psf, par, outCrg, outSiz : text;
     rline : strLogLine;
     finishRead, readInp : boolean;
     parNode, typeNode, resnameNode, nameNode, foundNode : p_CTnode;
@@ -342,7 +342,50 @@ procedure write_DelPhi_crg_siz (ctInp : obj_condText; title : p_CTnode);
       end;
     ctDB.print (ctDB.getRoot, 0, 0, 4, 2, 'tmp_paramDB.ct');
 {write output .crg parameter files for delphi}
-    
+    assign (outCrg, outPrefix+'.crg');
+    assign (outSiz, outPrefix+'.siz');
+    rewrite (outCrg);
+    rewrite (outSiz);
+{writing headers}
+    writeln (outCrg, '! created by '+charmmRead_name+'_v'+
+                     charmmRead_version+' on '+DateTimeToStr(Now));
+    writeln (outCrg, 'atom__resnumbc_charge_');
+    writeln (outSiz, '! created by '+charmmRead_name+'_v'+
+                     charmmRead_version+' on '+DateTimeToStr(Now));
+    writeln (outSiz, 'atom__res_radius_');
+    CTlog.clearError;
+    ctDB.gotoPos (resnameNode);
+    ctDB.gotoCont;   {move to first resname}
+{move over resName and atmName lists     *** find a better way ***}
+    while not CTlog.getError do
+      begin
+        writeln ('entering resname: '+ctDB.getCurrStr);
+        resName := ctDB.getCurrStr;
+        CTlog.clearError;
+        ctDB.gotoCont;   {move to nameNode}
+        ctDB.gotoCont;   {move to first atmName}
+        while not CTlog.getError do
+          begin
+            writeln ('entering name: '+ctDB.getCurrStr);
+            atmName := ctDB.getCurrStr;
+            atmType := ctDB.getFieldValue (ctDB.getCurrPos, 'type');
+            atmCharge := ctDB.getFieldValue (ctDB.getCurrPos, 'charge');
+            atmSize := ctDB.getFieldValue (ctDB.getCurrPos, 'size');
+
+            writeln (outCrg, atmName, resName:(9-Length(atmName)), atmCharge:15);
+            writeln (outSiz, atmName, resname:(9-Length(atmName)),'   ', atmSize);
+
+            CTlog.clearError;
+            ctDB.gotoNext;
+          end;
+        ctDB.gotoTitle;   {move to the nameNode}
+        ctDB.gotoTitle;   {move to the resName}
+        writeln ('returning resname title: '+ctDB.getCurrStr);
+        CTlog.clearError;
+        ctDB.gotoNext;
+      end;
+    close (outCrg);
+    close (outSiz);
   end;   {write_DelPhi_crg_siz}
 
 {
