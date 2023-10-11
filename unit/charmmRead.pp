@@ -8,7 +8,7 @@
 |    -created :
 |      -2023-10-05.Wed ;
 |    -modified :
-|      -2023-10-05.Wed ;;
+|      -2023-10-10.Tue ;;
 |  -code repositories :
 |    -GitHub: https://github.com/carloszep/mmLogInfo.pas ;
 |  -version :
@@ -49,10 +49,12 @@ const
   charmmRead_name = 'charmmRead';
   charmmRead_version = '0.0.1';
 
+type
+  strLogLine = AnsiString;
+  strToken = string;
 
-procedure charmmRead_init;
-procedure write_DelPhi_crg-siz (psf : strToken);
-procedure charmmRead_interpreter;
+
+procedure write_DelPhi_crg_siz (ctInp : obj_condText; title : p_CTnode);
 
 {
 |    -implementation section :
@@ -68,9 +70,8 @@ procedure charmmRead_interpreter;
 }
 implementation
 
-type
-  strLogLine = AnsiString;
-  strToken = string;
+const
+  max_nFileList = 20;
 
 var
   ulog : obj_infoMsg;
@@ -89,13 +90,14 @@ procedure charmmRead_init;
   end;
 
 {
-|        -procedure write_DelPhi_crg-siz (inpCTFileName : strToken) :
+|        -procedure write_DelPhi_crg_siz (ctInp : obj_condText;
+|                                       _ title : p_CTnode); :
 |          -creates DelPhi .crg and .siz files from .psf and .par files .
 |          -detects all unique resname/atomname pairs from the .psf file
 |           _ and write in the correct format the .crg and .siz files .
 |          -arguments :
-|            -inpCTFileName :
-|              -name of the .ct file containing input information :
+|            -ctInp :
+|              -condText object containing input information :
 |              -search field text (for .ct format) :
 |                -'outPrefix' :
 |                  -prefix used for the output .crg and .siz files ;
@@ -116,17 +118,223 @@ procedure charmmRead_init;
 |                  -par_water_ions2.prm .
 |                  -par_all36_cgenff.prm ;
 |                -outPrefix :
-|                  -parameters ;
+|                  -paramDelPhi ;
 |                -strDir :
 |                  -struct/ ;
 |                -parDir :
-|                  -toppar/namd/ ;;;
-|            -notes :
-|              - ;;;
+|                  -toppar/delphi/ ;;;;
+|          -notes :
+|            - ;;
 }
-procedure write_DelPhi_crg-siz (inpCTFileName : strToken);
+procedure write_DelPhi_crg_siz (ctInp : obj_condText; title : p_CTnode);
+  var
+    psfFile, outPrefix, strDir, parDir, parFile : strToken;
+    resName, atmName, atmCharge, atmType, atmSize : strToken;
+    nAtomStr, tmpStr : strToken;
+    nAtom, a : longint;
+    code : word;
+    psf, par : text;
+    rline : strLogLine;
+    finishRead : boolean;
+    parNode, typeNode, resnameNode, nameNode, foundNode : p_CTnode;
+    ctDB: obj_condText;
+
   begin
-  end;   {writeDelPhiCRG}
+{initialization}
+    nAtom := 0;
+    nAtomStr := '';
+    psfFile := '';
+    outPrefix := 'paramDelPhi';
+    strDir := 'struct/';
+    parDir := 'toppar/delphi/';
+    ctDB.init;
+    typeNode := nil;
+    resnameNode := nil;
+{extraction of input from ct object}
+    tmpStr := ctInp.getFieldValue(title, 'psfFileName');
+    if tmpStr <> '' then psfFile := tmpStr;
+    tmpStr := ctInp.getFieldValue(title, 'outPrefix');
+    if tmpStr <> '' then outPrefix := tmpStr;
+    tmpStr := ctInp.getFieldValue(title, 'strDir');
+    if tmpStr <> '' then strDir := tmpStr;
+    tmpStr := ctInp.getFieldValue(title, 'parDir');
+    if tmpStr <> '' then parDir := tmpStr;
+    parNode := ctInp.findText (title, 'parFiles');
+    if parNode = nil then
+      begin
+        ulog.infoMsg (2,1,'write_DelPhi_crg_siz: no parameter files specified');
+        exit;
+      end
+    else
+      begin
+        parNode := parNode^.cont;
+        while parNode <> nil do
+          begin
+            parFile := parNode^.CTstr;
+            ulog.infoMsg (0,2,'parameter file: '+parNode^.CTstr);
+            if FileExists (parDir+parFile) then
+              begin
+                assign (par, parDir+parFile);
+{$I-}           reset (par); {$I+}
+                if IOresult <> 0 then
+                  begin
+                    ulog.infoMsg (2,1,'write_DelPhi_crg_siz: unable to read parameter file!');
+                    exit;
+                  end;
+                finishRead := False;
+{extracting size parameter to create a DB of atmType and atmSize}
+                while (not EoF(par)) or (not finishRead) do
+                  begin
+                    readln (par, rline);
+                    if pos ('NONBONDED nbxmod', rline) > 0 then
+                      begin
+                        while (not EoF(par)) or (not finishRead) do
+                          begin
+                            readln (par, rline);
+                            if pos('NBFIX', rline) > 0 then
+                              begin
+                                finishRead := True;
+                              end
+                            else if (rline[1] = ' ') or (rline[1] = '!') then
+                              continue
+                            else
+                              begin
+                                atmType := ExtractWord (1, rline, [' ']);
+                                atmSize := ExtractWord (4, rline, [' ']);
+                                if typeNode = nil then
+                                  begin
+                                    if ctDB.empty then
+                                      ctDB.addRoot ('size')
+                                    else
+                                      begin
+                                        ctDB.gotoRoot;
+                                        ctDB.addFirst ('size');
+                                      end;
+                                    ctDB.addCont ('type');
+                                    typeNode := ctDB.getCurrPos;
+                                    ctDB.addFieldValue (atmType, atmSize);
+                                  end
+                                else
+                                  begin
+                                    ctDB.gotoPos (typeNode);
+                                    ctDB.addFieldValue (atmType, atmSize);
+                                  end;
+                              end;
+                          end;
+                      end;
+                  end;
+                close (par);
+                parNode := parNode^.next;
+              end;
+          end;
+      end;
+{creates a DB with charges and sizes for atom names according to the psf file}
+    if FileExists(strDir+psfFile) then
+      begin
+        assign (psf, strDir+psfFile);
+{$I-}   reset (psf); {$I+}
+        if IOresult <> 0 then
+          begin
+            ulog.infoMsg (2,1,'write_DelPhi_crg_siz: unable to read .psf file!');
+            exit;
+          end
+        else
+          ulog.infoMsg (0,2,'write_DelPhi_crg_siz: reading .psf info');
+{reading lines from .psf file}
+        finishRead := False;
+        while (not EoF(psf)) and (not finishRead) do
+          begin
+{detect number of atoms}
+            readln (psf, rline);
+            if pos('!NATOM', rline) > 0 then
+              begin
+                nAtomStr := ExtractWord (1, rline, [' ']);
+                val (nAtomStr, nAtom, code);
+                if code = 0 then
+                  ulog.infoMsg (0,3,'  number of atoms in .psf: '+nAtomStr)
+                else
+                  begin
+                    ulog.infoMsg(0,1,'  unable to read nAtoms from psf');
+                    exit;
+                  end;
+                finishRead := True;
+                for a:=1 to nAtom do
+                  begin
+{detect atomnames and resnames}
+                    readln (psf, rline);
+                    resName := ExtractWord (4, rline, [' ']);
+                    atmName := ExtractWord (5, rline, [' ']);
+                    atmType := ExtractWord (6, rline, [' ']);
+                    atmCharge := ExtractWord (7, rline, [' ']);
+                    atmSize := ctDB.getFieldValue (typeNode, atmType);
+                    if atmSize = '' then
+                      ulog.infoMsg(1,1,'  atmSize not found for type '+atmType);
+                    if resnameNode = nil then
+                      begin   {resnameNode not found)}
+                        if ctDB.empty then
+                          begin
+                            ctDB.addRoot ('resname');
+                            resnameNode := ctDB.getCurrPos;
+                          end
+                        else
+                          begin
+                            ctDB.gotoRoot;
+                            ctDB.addLast ('resname');
+                            resnameNode := ctDB.getCurrPos;
+                          end;
+                        ctDB.addCont (resName);
+                        ctDB.addCont ('name');
+                        ctDB.addCont (atmName);
+                        ctDB.addFieldValue ('type', atmType);
+                        ctDB.addFieldValue ('charge', atmCharge);
+                        ctDB.addFieldValue ('size', atmSize);
+                      end
+                    else   {resnameNode found}
+                      begin
+                        foundNode := ctDB.findText (resnameNode, resName);
+                        if foundNode = nil then
+                          begin   {add new resName}
+                            ctDB.gotoPos (resnameNode);
+                            ctDB.addLastCont (resName);
+                            ctDB.addCont ('name');
+                            ctDB.addCont (atmName);
+                            ctDB.addFieldValue ('type', atmType);
+                            ctDB.addFieldValue ('charge', atmCharge);
+                            ctDB.addFieldValue ('size', atmSize);
+                          end
+                        else
+                          begin   {the resname already exists}
+                            nameNode := ctDB.findText (foundNode, 'name');
+                            if nameNode = nil then
+                              begin
+                                ctDB.gotoPos (foundNode);
+                                ctDB.addCont ('name');
+                                nameNode := ctDB.getCurrPos;
+                              end;
+                            foundNode := ctDB.findText (nameNode, atmName);
+                            if foundNode = nil then
+                              begin   {add new atmName}
+                                ctDB.gotoPos (nameNode);
+                                ctDB.addLastCont (atmName);
+                                ctDB.addFieldValue ('type', atmType);
+                                ctDB.addFieldValue ('charge', atmCharge);
+                                ctDB.addFieldValue ('size', atmSize);
+                              end;
+                          end;
+                      end;
+                  end;
+              end;
+          end;
+        close (psf);
+      end
+    else
+      begin
+        ulog.infoMsg (2,1,'write_DelPhi_crg_siz: .psf file not found!');
+      end;
+    ctDB.print (ctDB.getRoot, 0, 0, 4, 2, 'tmp_paramDB.ct');
+{write output .crg parameter files for delphi}
+    
+  end;   {write_DelPhi_crg_siz}
 
 {
 |        -procedure charmmRead_interpreter; :
