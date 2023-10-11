@@ -1,0 +1,30 @@
+|-size :
+|  -type :
+|    -N :
+|      -1.850000 ;
+|    - :
+|      - ;;;
+|-resname :
+|  -VAL :
+|    -name :
+|      -N :
+|        -type :
+|          -NH3 ;
+|        -charge :
+|          --0.300000;
+|        -size :
+|          - ;;
+|      -HT1 :
+|        -type :
+|          - ;
+|        -charge :
+|          - ;
+|        -size :
+|          - ;;;;
+|  - ;
+
+|-type :
+|  -HC :
+|    -NH3 :
+|      -resname :
+|        -VAL ;;;;

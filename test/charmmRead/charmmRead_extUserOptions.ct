@@ -1,0 +1,15 @@
+|-charmmRead_interpreter :
+|  -write_DelPhi_crg_siz :
+|    -psfFileName :
+|      -1brs.ab.psf ;
+|    -parFiles :
+|      -par_all36m_prot.prm .
+|      -par_water_ions2.prm .
+|      -par_all36_cgenff.prm ;
+|    -outPrefix :
+|      -1brs_delphi ;
+|    -strDir :
+|      -struct/ ;
+|    -parDir :
+|      -toppar/delphi/ ;;;
+|- ;
