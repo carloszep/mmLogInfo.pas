@@ -372,12 +372,12 @@ procedure genDelPhiParam (ctInp : obj_condText; title : p_CTnode);
                         readInp := True;
                         continue;
                       end
-                    else if pos('NBFIX', rline) > 0 then
-                      begin
-                        CRlog.infoMsg (0,3,'  stop reading NONBONDED entries');
-                        finishRead := True;
-                        continue;
-                      end
+{                    else if pos('NBFIX', rline) > 0 then}
+{                      begin}
+{                        CRlog.infoMsg (0,3,'  stop reading NONBONDED entries');}
+{                        finishRead := True;}
+{                        continue;}
+{                      end}
                     else if readInp and (rline <> '') then
                       begin
                         if (rline[1] <> ' ') and (rline[1] <> '!') then
