@@ -12,11 +12,15 @@
 |  -code repositories :
 |    -GitHub: https://github.com/carloszep/mmLogInfo.pas ;
 |  -version :
-|    -0.0.2 ;
+|    -0.0.3 ;
 |  -version information :
 |    -changes implemented :
+|      -config_genDelPhiParam implemented ;
+|    -previous changes :
 |      -external user options at initialization time ;
 |    -to do list :
+|      -implement the extUsrOpts to specify global options ;
+|      -clean and arrange the info messages ;
 |      -to implement test procedures ;;
 }
 
@@ -31,7 +35,8 @@
 |      -type (unit types) :
 |        -strLogLine .
 |        -strToken ;
-|      -interface procedures .
+|      -interface procedures :
+|        -config_genDelPhiParam .
 |        -genDelPhiParam .
 |        -charmmRead_interpreter ;;
 }
@@ -46,13 +51,14 @@ uses
 
 const
   charmmRead_name = 'charmmRead';
-  charmmRead_version = '0.0.2';
+  charmmRead_version = '0.0.3';
 
 type
   strLogLine = AnsiString;
   strToken = string;
 
 
+procedure config_genDelPhiParam (userOpts : obj_condText; var title : p_CTnode);
 procedure genDelPhiParam (ctInp : obj_condText; title : p_CTnode);
 procedure charmmRead_interpreter (usrCommands : obj_condText; title : p_CTnode);
 
@@ -72,11 +78,8 @@ procedure charmmRead_interpreter (usrCommands : obj_condText; title : p_CTnode);
 |      -var (unit variables) :
 |        -CRlog :
 |          -unit log (obj_infoMsg) ;
-|        -userOptsFile :
-|          -name of the external .ct file for user option used by this unit .
-|          -predefined name: 'charmmRead_extUserOptions.ct' ;
 |        -userOpts :
-|          -obj_condText with the contents of the userOptsFile ;;
+|          -condText object with options for running unit procedures ;;
 |      -procedures and function :
 }
 implementation
@@ -87,7 +90,7 @@ const
 
 var
   CRlog : obj_infoMsg;
-  extUsrOpts : obj_condText;
+  extUsrOpts, userOpts : obj_condText;
 
 {
 |        -procedure charmmRead_init; :
@@ -149,7 +152,95 @@ procedure charmmRead_init;
         CRlog.infoMsg (0,2,'init: external user options file not found.');
 
       end;
+    userOpts.init;   {initialize global condText object with user options}
   end;   {charmmRead_init}
+
+{
+|        -procedure config_genDelPhiParam (userOpts : obj_condText;
+|                                        _ var title : p_CTnode);; :
+|          -populates the userOpts CT global object to run genDelPhiParam by
+|           _ considering files in the directory tree in the working dir .
+|          -a 'genDelPhiParam' options node is created in userOpts .
+|          -arguments :
+|            -userOpts :
+|              -condText object storing the options for running genDelPhiParam .
+|              -should be already initialized ;
+|            -title :
+|              -pointer to the "genDelPhiParam" node containing
+|               _ the user options ;;
+|          -notes :
+|            -see also 'genDelPhiParam' proc information comments .
+|            -the charmmRead_interpreter is called at the end of the proc .
+|            -uses the following default options :
+|              -'strDir' :-"struct/" ;
+|              -'parDir' :-"toppar/namd/" ;
+|              -'delphiParDir' :-"toppar/delphi/" ;;;;
+}
+procedure config_genDelPhiParam (userOpts : obj_condText; var title : p_CTnode);
+  var
+    psfFile, parFile, outPrefix, strDir, parDir, delphiParDir : strToken;
+    Info : TSearchRec;
+    
+  begin
+    CRlog.infoMsg (0,1,'config_genDelphiParam: reading input files...');
+{initialization}
+    strDir := 'struct/';
+    parDir := 'toppar/namd/';
+    delphiParDir := 'toppar/delphi/';
+{initializing genDelPhiParam options node}
+    if userOpts.empty then
+      userOpts.addRoot ('genDelPhiParam')
+    else
+      begin
+        userOpts.gotoRoot;
+        userOpts.addLast ('genDelPhiParam');
+      end;
+    title := userOpts.getCurrPos;
+{detects .psf file}
+    if FindFirst (strDir+'*.psf', faAnyFile, Info) = 0 then
+      begin
+        psfFile := Info.Name;
+        CRlog.infoMsg (0,1,'  psf file found in '+strDir+': '+psfFile);
+        userOpts.addFieldValue ('psfFileName', psfFile);
+        FindClose (Info);   {close the find handle}
+      end
+    else
+      begin
+        CRlog.infoMsg (2,1,'  no .psf file found in '+strDir);
+        exit;
+      end;
+{detects charmm parameter files}
+    if FindFirst (parDir+'*', faAnyFile, Info) = 0 then
+      begin
+        userOpts.addLastCont ('parFiles');
+        Repeat
+          if (Info.Name = '.') or (Info.Name = '..') then continue;
+          parFile := Info.Name;
+          CRlog.infoMsg (0,1,'  parameter file found in '+parDir+': '+parFile);
+          userOpts.addLastCont (parFile);
+          userOpts.gotoTitle;   {moves to 'parFiles' node}
+        Until FindNext(Info) <> 0;
+        FindClose (Info);   {close the find handle}
+      end
+    else
+      begin
+        CRlog.infoMsg (2,1,'  no parameters files found in '+parDir);
+        exit;
+      end;
+{add the rest of the default options}
+    userOpts.gotoPos (title);   {return to the 'genDelPhiParam' node}
+    outPrefix := 'delphi_'+StringReplace (psfFile, '.psf', '', []);
+    CRlog.infoMsg (0,2,'  adding outPrefix: '+outPrefix);
+    userOpts.addFieldValue ('outPrefix', outPrefix);
+    CRlog.infoMsg (0,2,'  adding strDir: '+strDir);
+    userOpts.addFieldValue ('strDir', strDir);
+    CRlog.infoMsg (0,2,'  adding parDir: '+parDir);
+    userOpts.addFieldValue ('parDir', parDir);
+    CRlog.infoMsg (0,2,'  adding delphiParDir: '+delphiParDir);
+    userOpts.addFieldValue ('delphiParDir', delphiParDir);
+    userOpts.print (title, 0, 0, 4, 1, '');
+    charmmRead_interpreter (userOpts, title);
+  end;   {config_genDelphiParam}
 
 {
 |        -procedure genDelPhiParam (ctInp : obj_condText;
@@ -171,7 +262,9 @@ procedure charmmRead_init;
 |                  -path to the directories for the .psf or .par files .
 |                  -optional fields .
 |                  -acceptable values :
-|                    -valid unix relative or absolute paths ;;;
+|                    -valid unix relative or absolute paths ;;
+|                -'delphiParDir' :
+|                  -output path where the delphi param files are written ;;
 |              -example :
 |                -psfFileName :
 |                  -1brs.psf ;
@@ -184,6 +277,8 @@ procedure charmmRead_init;
 |                -strDir :
 |                  -struct/ ;
 |                -parDir :
+|                  -toppar/namd/ ;
+|                -delphiParDir :
 |                  -toppar/delphi/ ;;;
 |            -title :
 |              -node containing (as cont list) the search field nodes
@@ -193,7 +288,7 @@ procedure charmmRead_init;
 }
 procedure genDelPhiParam (ctInp : obj_condText; title : p_CTnode);
   var
-    psfFile, outPrefix, strDir, parDir, parFile : strToken;
+    psfFile, outPrefix, strDir, parDir, delphiParDir, parFile : strToken;
     resName, atmName, atmCharge, atmType, atmSize : strToken;
     nAtomStr, tmpStr : strToken;
     nAtom, a : longint;
@@ -211,7 +306,8 @@ procedure genDelPhiParam (ctInp : obj_condText; title : p_CTnode);
     psfFile := '';
     outPrefix := 'paramDelPhi';
     strDir := 'struct/';
-    parDir := 'toppar/delphi/';
+    parDir := 'toppar/namd/';
+    delphiParDir := 'toppad/delphi/';
     ctDB.init;
     typeNode := nil;
     resnameNode := nil;
@@ -224,6 +320,8 @@ procedure genDelPhiParam (ctInp : obj_condText; title : p_CTnode);
     if tmpStr <> '' then strDir := tmpStr;
     tmpStr := ctInp.getFieldValue(title, 'parDir');
     if tmpStr <> '' then parDir := tmpStr;
+    tmpStr := ctInp.getFieldValue(title, 'delphiParDir');
+    if tmpStr <> '' then delphiParDir := tmpStr;
     parNode := ctInp.findText (title, 'parFiles');
     if parNode = nil then
       begin
@@ -405,8 +503,8 @@ procedure genDelPhiParam (ctInp : obj_condText; title : p_CTnode);
       end;
     ctDB.print (ctDB.getRoot, 0, 0, 4, 2, 'tmp_paramDB.ct');
 {write output .crg parameter files for delphi}
-    assign (outCrg, outPrefix+'.crg');
-    assign (outSiz, outPrefix+'.siz');
+    assign (outCrg, delphiParDir+outPrefix+'.crg');
+    assign (outSiz, delphiParDir+outPrefix+'.siz');
     rewrite (outCrg);
     rewrite (outSiz);
 {writing headers}
@@ -451,12 +549,21 @@ procedure genDelPhiParam (ctInp : obj_condText; title : p_CTnode);
 {
 |        -procedure charmmRead_interpreter (usrCommands : obj_condText;
 |                                         _ title : p_CTnode); :
-|          -interpretates user input through an external .ct file .
+|          -interpretates user input to run procedures
+|           _ trhough the condText object usrCommands .
 |          -arguments :
 |            -usrCommands :
-|              -condText object containing a 'charmmRead_interpreter' node ;
+|              -condText object containing a 'charmmRead_interpreter' and/or
+|               _ an options node to run specific unit procedures ;
 |            -title :
-|              -pointer to the 'charmmRead_interpreter' node in usrCommands ;;
+|              -pointer to the node to be processed in usrCommands .
+|              -acceptable values :
+|                -pointer to the 'charmmRead_interpreter' node :
+|                  -its count list is proccesed node by node ;
+|                -pointer to a specific options node .
+|                  -only this node is tried to be processed ;;;;
+|          -current registered options nodes :
+|            -'gendelphiparam' ;
 |          -notes :
 |            -external user options file (in .ct format) :
 |              -fixed name: 'charmmRead_usrCommands.ct' .
@@ -470,23 +577,38 @@ procedure charmmRead_interpreter (usrCommands : obj_condText; title : p_CTnode);
     command : strToken;
     optNode : p_CTnode;
 
+  procedure interpComm (command : strToken; optNode : p_CTnode);
+    begin
+      case LowerCase(command) of
+          'gendelphiparam' : genDelPhiParam (usrCommands, optNode);
+          else
+            CRlog.infoMsg (1,2,'CRinterp: command not found: '+command);        
+        end;
+    end;
+
   begin
-    CRlog.infoMsg (0,1,'charmmRead_interpreter: interpreting command list...');
+    CRlog.infoMsg (0,1,'charmmRead_interpreter: interpreting command(s) from condText input.');
     usrCommands.gotoPos (title);
-    CTlog.clearError;
-    usrCommands.gotoCont;
-    while not CTlog.getError do
+    if usrCommands.getCurrStr = 'charmmRead_interpreter' then
+      begin
+        CRlog.infoMsg (0,2,'  processing list of commands:');
+        CTlog.clearError;
+        usrCommands.gotoCont;
+        while not CTlog.getError do
+          begin
+            command := usrCommands.getCurrStr;
+            optNode := usrCommands.getCurrPos;
+            CRlog.infoMsg (0,2,'    command: '+command);
+            interpComm (command, optNode);
+            CTlog.clearError;
+            usrCommands.gotoNext;
+          end;
+      end
+    else
       begin
         command := usrCommands.getCurrStr;
-        optNode := usrCommands.getCurrPos;
-        CRlog.infoMsg (0,2,'  command: '+command);
-        case LowerCase(command) of
-            'gendelphiparam' : genDelPhiParam (usrCommands, optNode);
-            else
-              CRlog.infoMsg (1,2,'CR_commInterp: command not found: '+command);
-          end;
-        CTlog.clearError;
-        usrCommands.gotoNext;
+        CRlog.infoMsg (0,2,'  processing command: ' + command);
+        interpComm (command, title);
       end;
   end;   {charmmRead_interpreter}
 

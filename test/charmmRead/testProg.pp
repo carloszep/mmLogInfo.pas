@@ -13,6 +13,8 @@ begin
 
   ctInp.init;
   pNode := nil;
+
+  config_genDelPhiParam (ctInp, pNode);
 {input information for charmmRead}
 {  ctInp.open ('charmmRead_extUsrOpts.ct', 'I');}
 {  pNode := ctInp.findTextRec (nil, 'genDelPhiParam');}
