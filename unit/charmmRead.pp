@@ -8,19 +8,19 @@
 |    -created :
 |      -2023-10-05.Wed ;
 |    -modified :
-|      -2023-10-11.Wed ;;
+|      -2023-10-12.Thu ;;
 |  -code repositories :
 |    -GitHub: https://github.com/carloszep/mmLogInfo.pas ;
 |  -version :
 |    -0.0.3 ;
 |  -version information :
 |    -changes implemented :
+|      -info messages cleaned up .
 |      -config_genDelPhiParam implemented ;
 |    -previous changes :
 |      -external user options at initialization time ;
 |    -to do list :
-|      -implement the extUsrOpts to specify global options ;
-|      -clean and arrange the info messages ;
+|      -implement the extUsrOpts to specify global options .
 |      -to implement test procedures ;;
 }
 
@@ -31,7 +31,8 @@
 |        -sysutils, strutils, ioDrv, condText ;
 |      -const (constants) :
 |        -charmmRead_name .
-|        -charmmRead_version ;
+|        -charmmRead_version .
+|        -charmmRead_logFile ;
 |      -type (unit types) :
 |        -strLogLine .
 |        -strToken ;
@@ -52,6 +53,7 @@ uses
 const
   charmmRead_name = 'charmmRead';
   charmmRead_version = '0.0.3';
+  charmmRead_logFile = 'log_charmmRead.txt';
 
 type
   strLogLine = AnsiString;
@@ -123,13 +125,14 @@ procedure charmmRead_init;
     CRlog.init;
     CRlog.setInfoMsgName ('charmmRead');
     CRlog.setOutputDevice (c_outdev_screen,'','');
-    CRlog.setOutputLevel (c_outLvl_moderated);
+    CRlog.setOutputLevel (c_outLvl_detailed);
 {    CTlog.linkExtDev (CRlog);}
 {reading external user options}
     extUsrOpts.init;
+    CRlog.infoMsg (0,1,'charmmRead: Initialization...');
     if FileExists(extUsrOptsDir+extUsrOptsFile) then
       begin
-        CRlog.infoMsg (0,1,'init: external user options file found: ' +
+        CRlog.infoMsg (0,1,'  external user options file found: ' +
                            extUsrOptsDir+extUsrOptsFile);
         extUsrOpts.open (extUsrOptsDir+extUsrOptsFile, 'I');
 {checks for globalOptions}
@@ -148,10 +151,8 @@ procedure charmmRead_init;
           end;
       end
     else
-      begin
-        CRlog.infoMsg (0,2,'init: external user options file not found.');
-
-      end;
+      CRlog.infoMsg (0,2,'  external user options file not found: ' +
+                         extUsrOptsDir+extUsrOptsFile);
     userOpts.init;   {initialize global condText object with user options}
   end;   {charmmRead_init}
 
@@ -182,11 +183,15 @@ procedure config_genDelPhiParam (userOpts : obj_condText; var title : p_CTnode);
     Info : TSearchRec;
     
   begin
-    CRlog.infoMsg (0,1,'config_genDelphiParam: reading input files...');
+    CRlog.infoMsg (0,1,'config_genDelphiParam: Config from input files...');
 {initialization}
     strDir := 'struct/';
     parDir := 'toppar/namd/';
     delphiParDir := 'toppar/delphi/';
+    CRlog.infoMsg (0,2,'  Default values:');
+    CRlog.infoMsg (0,2,'    strDir: '+strDir);
+    CRlog.infoMsg (0,2,'    parDir: '+parDir);
+    CRlog.infoMsg (0,2,'    delphiParDir: '+delphiParDir);
 {initializing genDelPhiParam options node}
     if userOpts.empty then
       userOpts.addRoot ('genDelPhiParam')
@@ -224,19 +229,19 @@ procedure config_genDelPhiParam (userOpts : obj_condText; var title : p_CTnode);
       end
     else
       begin
-        CRlog.infoMsg (2,1,'  no parameters files found in '+parDir);
+        CRlog.infoMsg (2,1,'  no parameter files found in '+parDir);
         exit;
       end;
 {add the rest of the default options}
     userOpts.gotoPos (title);   {return to the 'genDelPhiParam' node}
     outPrefix := 'delphi_'+StringReplace (psfFile, '.psf', '', []);
-    CRlog.infoMsg (0,2,'  adding outPrefix: '+outPrefix);
+    CRlog.infoMsg (0,1,'  adding outPrefix: '+outPrefix);
     userOpts.addFieldValue ('outPrefix', outPrefix);
-    CRlog.infoMsg (0,2,'  adding strDir: '+strDir);
+    CRlog.infoMsg (0,1,'  adding strDir: '+strDir);
     userOpts.addFieldValue ('strDir', strDir);
-    CRlog.infoMsg (0,2,'  adding parDir: '+parDir);
+    CRlog.infoMsg (0,1,'  adding parDir: '+parDir);
     userOpts.addFieldValue ('parDir', parDir);
-    CRlog.infoMsg (0,2,'  adding delphiParDir: '+delphiParDir);
+    CRlog.infoMsg (0,1,'  adding delphiParDir: '+delphiParDir);
     userOpts.addFieldValue ('delphiParDir', delphiParDir);
     userOpts.print (title, 0, 0, 4, 1, '');
     charmmRead_interpreter (userOpts, title);
@@ -300,6 +305,7 @@ procedure genDelPhiParam (ctInp : obj_condText; title : p_CTnode);
     ctDB: obj_condText;
 
   begin
+    CRlog.infoMsg (0,1,'genDelPhiParam: Building .crg and .siz param files for DelPhi.');
 {initialization}
     nAtom := 0;
     nAtomStr := '';
@@ -312,40 +318,48 @@ procedure genDelPhiParam (ctInp : obj_condText; title : p_CTnode);
     typeNode := nil;
     resnameNode := nil;
 {extraction of input from ct object}
+    CRlog.infoMsg (0,1,'  Reading input options or taking default values:');
     tmpStr := ctInp.getFieldValue(title, 'psfFileName');
     if tmpStr <> '' then psfFile := tmpStr;
+    CRlog.infoMsg (0,1,'    psfFile: '+psfFile);
     tmpStr := ctInp.getFieldValue(title, 'outPrefix');
     if tmpStr <> '' then outPrefix := tmpStr;
+    CRlog.infoMsg (0,1,'    outPrefix: '+outPrefix);
     tmpStr := ctInp.getFieldValue(title, 'strDir');
     if tmpStr <> '' then strDir := tmpStr;
+    CRlog.infoMsg (0,1,'    strDir: '+strDir);
     tmpStr := ctInp.getFieldValue(title, 'parDir');
     if tmpStr <> '' then parDir := tmpStr;
+    CRlog.infoMsg (0,1,'    parDir: '+parDir);
     tmpStr := ctInp.getFieldValue(title, 'delphiParDir');
     if tmpStr <> '' then delphiParDir := tmpStr;
+    CRlog.infoMsg (0,1,'    delphiParDir: '+delphiParDir);
     parNode := ctInp.findText (title, 'parFiles');
     if parNode = nil then
       begin
-        CRlog.infoMsg (2,1,'genDelPhiParam: no parameter files specified');
+        CRlog.infoMsg (2,1,'  no parameter files specified!');
         exit;
       end
     else
       begin
+{extracting atom size parameters from parFiles}
+        CRlog.infoMsg (0,2,'  building database of atom size parameters');
         parNode := parNode^.cont;
         while parNode <> nil do
           begin
             parFile := parNode^.CTstr;
-            CRlog.infoMsg (0,2,'parameter file: '+parDir+parFile);
+            CRlog.infoMsg (0,1,'    parameter file: '+parDir+parFile);
             if FileExists (parDir+parFile) then
               begin
                 assign (par, parDir+parFile);
 {$I-}           reset (par); {$I+}
                 if IOresult <> 0 then
                   begin
-                    CRlog.infoMsg (2,1,'genDelPhiParam: unable to read parameter file!');
+                    CRlog.infoMsg (7,1,'  unable to read parameter file!');
                     exit;
                   end
                 else
-                  CRlog.infoMsg (0,1,'parameter file openned: '+parFile);
+                  CRlog.infoMsg (0,2,'  parameter file openned: '+parFile);
                 finishRead := False;
                 readInp := False;
 {extracting size parameter to create a DB of atmType and atmSize}
@@ -354,11 +368,13 @@ procedure genDelPhiParam (ctInp : obj_condText; title : p_CTnode);
                     readln (par, rline);
                     if pos ('NONBONDED nbxmod', rline) > 0 then
                       begin
+                        CRlog.infoMsg (0,3,'  start reading NONBONDED entries');
                         readInp := True;
                         continue;
                       end
                     else if pos('NBFIX', rline) > 0 then
                       begin
+                        CRlog.infoMsg (0,3,'  stop reading NONBONDED entries');
                         finishRead := True;
                         continue;
                       end
@@ -368,6 +384,8 @@ procedure genDelPhiParam (ctInp : obj_condText; title : p_CTnode);
                           begin
                             atmType := ExtractWord (1, rline, [' ']);
                             atmSize := ExtractWord (4, rline, [' ']);
+                            CRlog.infoMsg (0,3,'read atmType: '+atmType+
+                                               ' atmSize: '+atmSize);
                             if typeNode = nil then
                               begin
                                 if ctDB.empty then
@@ -399,17 +417,18 @@ procedure genDelPhiParam (ctInp : obj_condText; title : p_CTnode);
           end;
       end;
 {creates a DB with charges and sizes for atom names according to the psf file}
+    CRlog.infoMsg (0,2,'  building database of atom charge parameters');
     if FileExists(strDir+psfFile) then
       begin
         assign (psf, strDir+psfFile);
 {$I-}   reset (psf); {$I+}
         if IOresult <> 0 then
           begin
-            CRlog.infoMsg (2,1,'genDelPhiParam: unable to read .psf file!');
+            CRlog.infoMsg (7,1,'  unable to read .psf file!');
             exit;
           end
         else
-          CRlog.infoMsg (0,2,'genDelPhiParam: reading .psf info');
+          CRlog.infoMsg (0,2,'  reading info from psfFile');
 {reading lines from .psf file}
         finishRead := False;
         while (not EoF(psf)) and (not finishRead) do
@@ -421,10 +440,10 @@ procedure genDelPhiParam (ctInp : obj_condText; title : p_CTnode);
                 nAtomStr := ExtractWord (1, rline, [' ']);
                 val (nAtomStr, nAtom, code);
                 if code = 0 then
-                  CRlog.infoMsg (0,3,'  number of atoms in .psf: '+nAtomStr)
+                  CRlog.infoMsg (0,2,'  number of atoms in .psf: '+nAtomStr)
                 else
                   begin
-                    CRlog.infoMsg(0,1,'  unable to read nAtoms from psf');
+                    CRlog.infoMsg(2,1,'  unable to read nAtoms from psf');
                     exit;
                   end;
                 finishRead := True;
@@ -436,6 +455,10 @@ procedure genDelPhiParam (ctInp : obj_condText; title : p_CTnode);
                     atmName := ExtractWord (5, rline, [' ']);
                     atmType := ExtractWord (6, rline, [' ']);
                     atmCharge := ExtractWord (7, rline, [' ']);
+                    CRlog.infoMsg (0,3,'  read: resName: '+resName+
+                                              ' atmName: '+atmName+
+                                              ' atmType: '+atmType+
+                                            ' atmCharge: '+atmCharge);
                     atmSize := ctDB.getFieldValue (typeNode, atmType);
                     if atmSize = '' then
                       CRlog.infoMsg(1,1,'  atmSize not found for type '+atmType);
@@ -501,8 +524,12 @@ procedure genDelPhiParam (ctInp : obj_condText; title : p_CTnode);
       begin
         CRlog.infoMsg (2,1,'genDelPhiParam: .psf file not found!');
       end;
+    CRlog.infoMsg (0,2,'  writing parameters database: tmp_paramDB.ct');
     ctDB.print (ctDB.getRoot, 0, 0, 4, 2, 'tmp_paramDB.ct');
 {write output .crg parameter files for delphi}
+    CRlog.infoMsg (0,1,'  writing output files:');
+    CRlog.infoMsg (0,1,'    '+delphiParDir+outPrefix+'.crg');
+    CRlog.infoMsg (0,1,'    '+delphiParDir+outPrefix+'.siz');
     assign (outCrg, delphiParDir+outPrefix+'.crg');
     assign (outSiz, delphiParDir+outPrefix+'.siz');
     rewrite (outCrg);
@@ -544,6 +571,7 @@ procedure genDelPhiParam (ctInp : obj_condText; title : p_CTnode);
       end;
     close (outCrg);
     close (outSiz);
+    CRlog.infoMsg (0,2,'genDelPhiParam: Done.')
   end;   {genDelPhiParam}
 
 {
@@ -616,11 +644,7 @@ begin
   charmmRead_init;
 end.   {unit charmmRead}
 
-
 {
 |  - ;
-|- .
-
-
 |- ;
 }
