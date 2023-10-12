@@ -124,7 +124,7 @@ procedure charmmRead_init;
   begin
     CRlog.init;
     CRlog.setInfoMsgName ('charmmRead');
-    CRlog.setOutputDevice (c_outdev_screen,charmmRead_logFile,'R');
+    CRlog.setOutputDevice (c_outdev_file,charmmRead_logFile,'R');
     CRlog.setOutputLevel (c_outLvl_extense);
 {    CTlog.linkExtDev (CRlog);}
 {reading external user options}
