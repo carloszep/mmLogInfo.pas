@@ -124,8 +124,8 @@ procedure charmmRead_init;
   begin
     CRlog.init;
     CRlog.setInfoMsgName ('charmmRead');
-    CRlog.setOutputDevice (c_outdev_screen,'','');
-    CRlog.setOutputLevel (c_outLvl_detailed);
+    CRlog.setOutputDevice (c_outdev_screen,charmmRead_logFile,'R');
+    CRlog.setOutputLevel (c_outLvl_extense);
 {    CTlog.linkExtDev (CRlog);}
 {reading external user options}
     extUsrOpts.init;
@@ -366,7 +366,7 @@ procedure genDelPhiParam (ctInp : obj_condText; title : p_CTnode);
                 while (not EoF(par)) and (not finishRead) do
                   begin
                     readln (par, rline);
-                    if pos ('NONBONDED nbxmod', rline) > 0 then
+                    if pos ('NONBONDED', rline) > 0 then
                       begin
                         CRlog.infoMsg (0,3,'  start reading NONBONDED entries');
                         readInp := True;
