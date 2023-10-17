@@ -12,4 +12,11 @@
 |      -struct/ ;
 |    -parDir :
 |      -toppar/namd/ ;;;
+|-no charmmRead_iniGlobalOptions :
+|  -infoMsgName :
+|    -default ;
+|  -logOutputDevice :
+|    -charmmRead_logFile+screen ;
+|  -logOutputLevel :
+|    -detailed ;;
 |- ;

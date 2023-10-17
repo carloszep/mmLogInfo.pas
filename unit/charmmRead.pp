@@ -8,19 +8,20 @@
 |    -created :
 |      -2023-10-05.Wed ;
 |    -modified :
-|      -2023-10-12.Thu ;;
+|      -2023-10-17.Tue ;;
 |  -code repositories :
 |    -GitHub: https://github.com/carloszep/mmLogInfo.pas ;
 |  -version :
-|    -0.0.3 ;
+|    -0.0.4 ;
 |  -version information :
 |    -changes implemented :
+|      -external user options at initialization time ;
+|    -previous changes :
 |      -info messages cleaned up .
 |      -config_genDelPhiParam implemented ;
-|    -previous changes :
-|      -external user options at initialization time ;
 |    -to do list :
-|      -implement the extUsrOpts to specify global options .
+|      -implement the extUsrOpts to specify global options different from
+|       _ initial global options .
 |      -to implement test procedures ;;
 }
 
@@ -52,7 +53,7 @@ uses
 
 const
   charmmRead_name = 'charmmRead';
-  charmmRead_version = '0.0.3';
+  charmmRead_version = '0.0.4';
   charmmRead_logFile = 'log_charmmRead.txt';
 
 type
@@ -102,34 +103,168 @@ var
 procedure charmmRead_init;
   var
     nodeFound : p_CTnode;
-{
-|            -procedure printHelp; :
-|              -printing help messages to the screen ;
-}
-  procedure printHelp;
-    begin
-    end;   {printHelp}
 
 {
-|            -procedure extUsrOpt_globalOptions; :
+|            -procedure extUsrOpt_globalOptions (globOptsNode: p_CTnode); :
 |              -reads global options from extUsrOpts file at
-|               _ initialization time .
+|               _ initialization time from the extUsrOptsFile .
 |              -intended to change the behavior of the charmmRead unit
-|               _ without recompiling ;
+|               _ without recompiling .
+|              -activated if the node 'charmmRead_iniGlobalOptions' is found .
+|              -field values as cont nodes of 'charmmRead_iniGlobalOptions' :
+|                -"infoMsgName" :
+|                  -infoMsg object name prepended to the log messages .
+|                  -acceptable values :
+|                    -"default" :
+|                      -the value of charmmRead_name + _version is used ;
+|                    -any short string ;;
+|                -"logOutputDevice" :
+|                  -output devise used as output of log messages .
+|                  -acceptable values :
+|                    -"charmmRead_logFile" .
+|                    -"charmmRead_logFile+screen" .
+|                    -"screen" .
+|                    -"none" .
+|                    -any other string is used as filename ;;
+|                -"logOutputLevel" :
+|                  -controls the amount of log messages output .
+|                  -acceptable values :
+|                    -"c_outLvl_none", "0" .
+|                    -"c_outLvl_moderated", "1" .
+|                    -"c_outLvl_detailed", "2" .
+|                    -"c_outLvl_extense", "3" ;;;
+|              -example of 'charmmRead_iniGlobalOptions' node:  :
+|                -charmmRead_iniGlobalOptions :
+|                  -infoMsgName :
+|                    -default ;
+|                  -logOutputDevice :
+|                    -charmmRead_logFile ;
+|                  -logOutputLevel :
+|                    -moderated ;;;
 }
-  procedure extUsrOpts_globalOptions;
+  procedure extUsrOpts_iniGlobalOptions (globOptsNode : p_CTnode);
+    var
+      field, value : strToken;
     begin
+      CRlog.infoMsg (0,2,'reading initial global options:');
+      extUsrOpts.gotoPos (globOptsNode);
+      CTlog.clearError;
+      extUsrOpts.gotoCont;
+      while not CTlog.getError do
+        begin
+          field := extUsrOpts.getCurrStr;
+          value := extUsrOpts.getFieldValue (globOptsNode, field);
+          case field of
+              'infoMsgName' :
+                begin
+                  case value of
+                      'default':
+                        begin
+                          CRlog.setInfoMsgName (charmmRead_name +
+                                                charmmRead_version);
+                          CRlog.infoMsg (0,2,
+                            'infoMsg name changed to the default value: '+
+                            charmmRead_name + charmmRead_version);
+                        end;
+                      else
+                        begin
+                          CRlog.setInfoMsgName (value);
+                          CRlog.infoMsg (0,2,'infoMsg name changed to: '+value);
+                        end;
+                    end;
+                end;
+              'logOutputDevice' :
+                begin
+                  case value of
+                      'none', '0' :
+                        begin
+                          CRlog.infoMsg (0,1,'setting log ouput device to: none');
+                          CRlog.setOutputDevice (c_outDev_none, '', '');
+                        end;
+                      'screen', '1' :
+                        begin
+                          CRlog.infoMsg (0,2,
+                                         'setting log ouput device to: screen');
+                          CRlog.setOutputDevice (c_outDev_screen, '', '');
+                        end;
+                      'charmmRead_logFile', '2' :
+                        begin
+                          CRlog.infoMsg (0, 2,
+                            'setting log ouput device to file: ' +
+                            charmmRead_logFile);
+                          CRlog.setOutputDevice (c_outdev_file,
+                                                 charmmRead_logFile, 'R');
+                        end;
+                      'charmmRead_logFile+screen', '3' :
+                        begin
+                          CRlog.infoMsg (0, 2,
+                            'setting log ouput device to file: ' +
+                            charmmRead_logFile+' and to the screen.');
+                          CRlog.setOutputDevice (c_outdev_screen_file,
+                                                 charmmRead_logFile,'R');
+                        end;
+                      else
+                        begin
+                          CRlog.infoMsg (2, 2, value+' value not recognized ' +
+                                         'to field: ' + field +
+                                         ' for charmmRead_iniGlobalOptions.');
+                        end;
+                    end;
+                end;
+              'logOutputLevel' :
+                begin
+                  case value of
+                      'none', '0' : 
+                        begin
+                          CRlog.infoMsg (0, 2, 'setting log output level to'+
+                                               ': none (lvl 0)');
+                          CRlog.setOutputLevel (c_outLvl_none);
+                        end;
+                      'moderated', '1' : 
+                        begin
+                          CRlog.infoMsg (0, 2, 'setting log output level to'+
+                                               ': moderated (lvl 1)');
+                          CRlog.setOutputLevel (c_outLvl_moderated);
+                        end;
+                      'detailed', '2' : 
+                        begin
+                          CRlog.infoMsg (0, 2, 'setting log output level to'+
+                                               ': detailed (lvl 2)');
+                          CRlog.setOutputLevel (c_outLvl_detailed);
+                        end;
+                      'extense', '3' : 
+                        begin
+                          CRlog.infoMsg (0, 2, 'setting log output level to'+
+                                               ': extense (lvl 3)');
+                          CRlog.setOutputLevel (c_outLvl_extense);
+                        end;
+                      else
+                        begin
+                          CRlog.infoMsg (2, 2, value+' value not recognized ' +
+                                         'to field: ' + field +
+                                         ' for charmmRead_iniGlobalOptions.');
+                        end;
+                    end;
+                end;
+              else
+                CRlog.infoMsg (2, 2, field +
+                       ' field not recognized for charmmRead_iniGlobalOptions');
+            end;
+          CTlog.clearError;
+          extUsrOpts.gotoNext;
+        end;
+      CRlog.infoMsg (0,2,'finished reading initial global options.');
     end;   {extUsrOpts_globalOptions}
 
-  begin
+  begin   {charmmRead_init}
     CRlog.init;
-    CRlog.setInfoMsgName ('charmmRead');
-    CRlog.setOutputDevice (c_outdev_file,charmmRead_logFile,'R');
-    CRlog.setOutputLevel (c_outLvl_extense);
+    CRlog.setInfoMsgName (charmmRead_name);
+    CRlog.setOutputDevice (c_outdev_screen,charmmRead_logFile,'R');
+    CRlog.setOutputLevel (c_outLvl_moderated);
 {    CTlog.linkExtDev (CRlog);}
 {reading external user options}
     extUsrOpts.init;
-    CRlog.infoMsg (0,1,'charmmRead: Initialization...');
+    CRlog.infoMsg (0,1,'Initialization...');
     if FileExists(extUsrOptsDir+extUsrOptsFile) then
       begin
         CRlog.infoMsg (0,1,'  external user options file found: ' +
@@ -137,10 +272,15 @@ procedure charmmRead_init;
         extUsrOpts.open (extUsrOptsDir+extUsrOptsFile, 'I');
 {checks for globalOptions}
         nodeFound := nil;
-        nodeFound := extUsrOpts.findTextRec (nil, 'charmmRead_globalOptions');
+        nodeFound := extUsrOpts.findTextRec (nil, 'charmmRead_iniGlobalOptions');
         if nodeFound <> nil then
-          begin   {pending to implement reading global options}
-            
+          begin   {reading initial global options}
+            CRlog.infoMsg (0,1,'"charmmRead_iniGlobalOptions" node found');
+            extUsrOpts_iniGlobalOptions (nodeFound);
+          end
+        else
+          begin
+            CRlog.infoMsg (0,1,'"charmmRead_iniGlobalOptions" node not found');
           end;
 {checks for interpreter commands}
         nodeFound := nil;
