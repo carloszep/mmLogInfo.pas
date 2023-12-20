@@ -4,3 +4,4 @@
 # ignore compiled binary
 latest/mmLogInfo
 **/log_mmLogInfo.txt
+.DS_Store
