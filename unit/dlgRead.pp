@@ -8,6 +8,12 @@
 |      -extract information from a single or a group of .dlg files to build a
 |       _ script for analysis/visualization programs such as VMD .
 |      -the relevant information is stored in an array molInfo within vmd ;
+|    -procedure description :
+|      -a driver procedure will search recursivelly all .dlg files .
+|      -a record of directories containing .dlg files is done to group them .
+|      -it will be required a list of dirs, each with a list of .dlg's, and
+|       _ each will require at least one list of conformers .
+|      - ;
 |    -.dlg file info... :
 |      -relevant information (example lines) :
 |        -program version :
@@ -99,35 +105,41 @@
 |      -a new array could be used to store the lig-rec info instead of molInfo .
 |      -ligInfo record :
 |        -... ;;;
-|  -interface section :
-|    -uses :
-|      -sysutils, strutils, ioDrv, condText ;
-|    -constants :
-|      -dlgRead_name :- ;
-|      -dlgRead_version :- ;;
-|    -types :
-|      -strLogLine :- ;
-|      -strToken :- ;
-|      -rec_dockedModel :- ;
-|      -rec_dlgInfo :
-|        -record to store information from a dlg file .
-|        -basePath :- ;
-|        -dlgPath :- ;
-|        -dlgName :- ;
-|        -dpfName :- ;
-|        -dpfPath :- ;
-|        -gridSpacing :- ;
-|        -gridXpoints :- ;
-|        -gridYpoints :- ;
-|        -gridZpoints :- ;
-|        -ga_run :- ;
-|        - ;
-|    -vars :
-|      -ulog :-object to manage log info messages ;;
-|    -functions and procedures :- ;
-|      -dlgRead_init :- ;
-|      -dlgRead_finish :- ;
-|      -dlgRead_test :- ;;;
+}
+
+{
+|  -unit dlgRead :
+|    -interface section :
+|      -uses :
+|        -sysutils, strutils, ioDrv, condText ;
+|      -constants :
+|        -dlgRead_name :- ;
+|        -dlgRead_version :- ;
+|        -dlgRead_logFile :- ;;
+|      -types :
+|        -strLogLine :- ;
+|        -strToken :- ;
+|        -rec_dockedModel :- ;
+|        -rec_dlgInfo :
+|          -record to store information from a dlg file .
+|          -basePath :- ;
+|          -dlgPath :- ;
+|          -dlgName :- ;
+|          -dpfName :- ;
+|          -dpfPath :- ;
+|          -gridSpacing :- ;
+|          -gridXpoints :- ;
+|          -gridYpoints :- ;
+|          -gridZpoints :- ;
+|          -ga_run :- ;
+|          - ;
+|      -vars :
+|        -dlgrl :-object to manage log info messages ;;
+|      -functions and procedures :- ;
+|        -dlgRead_init :- ;
+|        -dlgRead_finish :- ;
+|        -dlgRead_test :- ;;;;
+|- ;
 }
 
 unit dlgRead;
@@ -142,13 +154,16 @@ uses
 const
   dlgRead_name = 'dlgRead';
   dlgRead_version = '0.0.1';
+  dlgRead_logFile = 'log_dlgRead.txt';
 
 type
   strLogLine = AnsiString;
   strToken = string;
+
   rec_dockedModel = record
     
   end;
+
   rec_dlgInfo = record
     basePath: strToken;
     dlgPath: strToken;
@@ -163,7 +178,7 @@ type
   end;
 
 var
-  ulog : obj_infoMsg;
+  dlgrl : obj_infoMsg;
 
 procedure dlgInfo_recInit (var dlgInfo: rec_dlgInfo);
 procedure dlgReadFile (basePath,filePath,fileName: string;
@@ -171,8 +186,6 @@ procedure dlgReadFile (basePath,filePath,fileName: string;
 
 procedure dlgRead_test (testOpt: string);
 procedure dlgRead_init;
-procedure dlgRead_iniUserOptions;
-procedure dlgRead_rtUserOptions;
 procedure dlgRead_finish;
 
 {
@@ -181,6 +194,8 @@ procedure dlgRead_finish;
 }
 implementation
 
+var
+  dlgInfo : rec_dlgInfo;
 
 {|-procedure dlgInfo_recInit (var dlgInfo: rec_dlgInfo) :
  |  -initializes a rec_dlgInfo record ;}
@@ -189,7 +204,7 @@ procedure dlgInfo_recInit (var dlgInfo: rec_dlgInfo);
     procName: string;
   begin
     procName := 'dlgInfo_recInit';
-    ulog.infoMsg (0,2,procName+': initializing record dlgInfo...');
+    dlgrl.infoMsg (0,2,procName+': initializing record dlgInfo...');
     with dlgInfo do
       begin
         basePath := '';
@@ -234,6 +249,8 @@ procedure dlgReadFile (basePath,filePath,fileName: string;
   begin
   end;   {dlgReadFile}
 
+
+
 {|-procedure dlgRead_test (testOpt: string) :
  |  -performs unit tests ;}
 procedure dlgRead_test (testOpt: string);
@@ -244,30 +261,21 @@ procedure dlgRead_test (testOpt: string);
  |  -performs all initialization operations of the unit ;}
 procedure dlgRead_init;
   begin
-    ulog.init;
-    ulog.setInfoMsgName ('dlgRead');
-    ulog.setOutputDevice (c_outdev_screen,'','');
-    {code for reading external user options}
-    dlgRead_extUserOptions;
+{initialize unit log file}
+    dlgrl.init;
+    dlgrl.setInfoMsgName ('dlgRead');
+    dlgrl.setOutputDevice (c_outdev_screen,'','');
+{initialize unit records}
+    dlgRead_recInit (dlgInfo);
+{code for reading external user options}
+    
   end;
-
-{|-procedure dlgRead_iniUserOptions :
- |  -checks for initial external/config/input files with user options ;}
-procedure dlgRead_iniUserOptions;
-  begin
-  end;   {dlgRead_iniUserOptions}
-
-{|-procedure dlgRead_rtUserOptions :
- |  -experimental procedure to input external user option in run time ;}
-procedure dlgRead_rtUserOptions;
-  begin
-  end;   {dlgRead_rtUserOptions}
 
 {|-procedure dlgRead_finish :
  |  -finalizes the unit ;;;}
 procedure dlgRead_finish;
   begin
-    ulog.finish;
+    dlgrl.finish;
   end;
 
 {|  -dlgRead unit body :- ;;}
