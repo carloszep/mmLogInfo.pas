@@ -13,7 +13,8 @@
 |      -a record of directories containing .dlg files is done to group them .
 |      -it will be required a list of dirs, each with a list of .dlg's, and
 |       _ each will require at least one list of conformers .
-|      - ;
+|      -a condText record dlgDB is created with a baseDir, a list of dlgDirs,
+|       _ the list of dlgs, the list of rec names, ... ;
 |    -.dlg file info... :
 |      -relevant information (example lines) :
 |        -program version :
@@ -180,6 +181,7 @@ type
 var
   dlgrl : obj_infoMsg;
 
+procedure dlgRead_scanDir (basePath : strToken; dlgDB : obj_condText);
 procedure dlgInfo_recInit (var dlgInfo: rec_dlgInfo);
 procedure dlgReadFile (basePath,filePath,fileName: string;
                        var dlgInfo: rec_dlgInfo);
@@ -187,18 +189,58 @@ procedure dlgReadFile (basePath,filePath,fileName: string;
 procedure dlgRead_test (testOpt: string);
 procedure dlgRead_init;
 procedure dlgRead_finish;
+procedure dlgRead_interpreter (usrCommands : objCondText; title : p_CTnode);
 
 {
 |  -implementation section :
-|    -functions and procedures :
 }
 implementation
 
+{
+|    -var :
+|      -dlgInfo :- ;
+|      -dlgDB :- ;;;
+}
 var
   dlgInfo : rec_dlgInfo;
+  dlgDB : obj_condText;
 
-{|-procedure dlgInfo_recInit (var dlgInfo: rec_dlgInfo) :
- |  -initializes a rec_dlgInfo record ;}
+{
+|    -functions and procedures :
+}
+
+{
+|-procedure dlgRead_scanDir (basePath : strToken; dlgDB : obj_condText); :
+|  -makes a recursive search of directories containing .dlg files .
+|  -arguments :
+|    -basePath :
+|      -path from which the recursive search is started .
+|      -acceptable values :
+|        -either a relative or absolute linux path ;;
+|    -dlgDB :
+|      -condText object used to record the directory paths found .
+|      -CT structure created (example) :
+|        -dlgBasePath :
+|          -<absBasePath> ;
+|        -dlgDirList :
+|          -<relDirPath1> :
+|            -dlgFileList :
+|              -<dlgFileName1> .
+|              -<dlgFileName1> .
+|              -... ;;
+|          -<relDirPath2> :- ;
+|          -... ;;;;
+|  -notes :
+|    -the directory path found are recorded as absolute paths ;;
+}
+procedure dlgRead_scanDir (basePath : strToken; dlgDB : obj_condText);
+  begin
+  end;   {dlgRead_scanDir}
+
+{
+|-procedure dlgInfo_recInit (var dlgInfo: rec_dlgInfo) :
+|  -initializes a rec_dlgInfo record ;
+}
 procedure dlgInfo_recInit (var dlgInfo: rec_dlgInfo);
   var
     procName: string;
@@ -263,10 +305,11 @@ procedure dlgRead_init;
   begin
 {initialize unit log file}
     dlgrl.init;
-    dlgrl.setInfoMsgName ('dlgRead');
+    dlgrl.setInfoMsgName (dlgRead_name+dlgRead_version);
     dlgrl.setOutputDevice (c_outdev_screen,'','');
 {initialize unit records}
     dlgRead_recInit (dlgInfo);
+    dlgDB.init;
 {code for reading external user options}
     
   end;
@@ -277,6 +320,18 @@ procedure dlgRead_finish;
   begin
     dlgrl.finish;
   end;
+
+{
+|-procedure dlgRead_interpreter (usrCommands: objCondText; title: p_CTnode); :
+|  - ;
+}
+procedure dlgRead_interpreter (usrCommands: objCondText; title: p_CTnode);
+  begin
+  end;
+
+{
+|      - ;;;
+}
 
 {|  -dlgRead unit body :- ;;}
 
