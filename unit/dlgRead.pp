@@ -266,6 +266,9 @@ procedure dlgInfo_recInit (var dlgInfo: rec_dlgInfo);
 {|-procedure dlgReadFile
  | _ (basePath,filePath,fileName: string; var dlgInfo: rec_dlgInfo) :
  |  -reads and process a .dlg file extracting information to dlgInfo .
+ |  -information to be extracted :
+ |    -dpfName .
+ |    - ;
  |  -arguments :
  |    -basePath :
  |      -directory path sufix to be prepended to the filePath .
@@ -288,7 +291,88 @@ procedure dlgInfo_recInit (var dlgInfo: rec_dlgInfo);
  |      -must be already initializaed ;;;}
 procedure dlgReadFile (basePath,filePath,fileName: string;
                        var dlgInfo: rec_dlgInfo);
+  var
+    procName : string;
+    lline : strLogLine;
+    ltoken : strToken;
+    dlg : text;
+    
+
   begin
+    procName := 'dlgReadFile: ';
+    dlgrl.infoMsg (0,2,procName+'Reading .dlg file; ');
+    dlgrl.infoMsg (0,2,'    extracting data into dlgInfo record.');
+    dlgrl.infoMsg (0,3,'  fileName: '+fileName);
+    dlgrl.infoMsg (0,3,'  filePath: '+filePath);
+    dlgrl.infoMsg (0,3,'  basePath: '+basePath);
+{initializing dlgInfo record}
+    dlgInfo.recInit (dlgInfo);
+
+{record input}
+    dlgInfo.basePath := basePath;
+    dlgInfo.dlgPath := filePath;
+    dlgInfo.dlgName := fileName;
+
+{openning and processing file}
+    assign (basePath+filePath+fileName, dlg);
+{$I-} reset (namdLog); {$I+}
+    if IOresult <> 0 then
+      begin
+        dlgrl.infoMsg (7,1,procName+'Error reading file: '+fileName);
+        exit
+      end
+    else
+      begin
+        while not EoF(dlg) do
+          begin
+            readln (dlg, lline);
+            if pos('Docking parameter file (DPF) used', lline) > 0) then
+              begin
+                ltoken := ExtractWord(9, lline, [' ']);
+                dlgInfo.dpfName := ltoken;
+                dlgrl.infoMsg (0,3,'  DPF: '+ltoken);
+                if FileExists(basePath+filePath+dlgInfo.dpfName) then
+                  begin
+                    dlgrl.infoMsg (0,3,'DPF available in '+basePath+filePath);
+                    dlgInfo.dpfPath := basePath + filePath;
+                  end
+                else   {note: code for search in other directories may be added}
+                  begin
+                    dlgrl.infoMsg (0,3,'DPF not found in '+basePath+filePath);
+                  end
+              end
+            else if pos('Grid Point Spacing =', lline) > 0 then
+              begin
+                ltoken = ExtractWord(5, lline, [' ']);
+                dlgInfo.gridSpacing := ltoken;
+                dlgrl.infoMsg (0,3,'  grid point spacing: '+ltoken);
+              end
+            else if pos('x-points' , lline) > 0 then
+              begin
+                ltoken := ExtractWord(8, lline, [' ']);
+                dlgInfo.gridXpoints := ltoken;
+                dlgrl.infoMsg (0,3,'  grid X-points: '+ltoken);
+              end
+            else if pos('y-points' , lline) > 0 then
+              begin
+                ltoken := ExtractWord(1, lline, [' ']);
+                dlgInfo.gridYpoints := ltoken;
+                dlgrl.infoMsg (0,3,'  grid Y-points: '+ltoken);
+              end
+            else if pos('z-points' , lline) > 0 then
+              begin
+                ltoken := ExtractWord(1, lline, [' ']);
+                dlgInfo.gridZpoints := ltoken;
+                dlgrl.infoMsg (0,3,'  grid Z-points: '+ltoken);
+              end
+            else if then
+            else if then
+            else
+              begin
+              end
+          end;
+      end;
+
   end;   {dlgReadFile}
 
 
