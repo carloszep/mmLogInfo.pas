@@ -156,6 +156,7 @@ const
   dlgRead_name = 'dlgRead';
   dlgRead_version = '0.0.1';
   dlgRead_logFile = 'log_dlgRead.txt';
+  dlgRead_extConfigFile = ''
 
 type
   strLogLine = AnsiString;
@@ -197,10 +198,20 @@ procedure dlgRead_interpreter (usrCommands : obj_condText; title : p_CTnode);
 implementation
 
 {
+|    -const :
+|      -dlgRead_ctConf_filePath :
+|        -default file path containing the .ct file to specifiy external
+|         - user options ;
+|      -dlgRead_ctConf_fileName :
+|        -default name of the .ct file containing external user options ;;
 |    -var :
 |      -dlgInfo :- ;
 |      -dlgDB :- ;;;
 }
+const
+  dlgRead_ctConf_filePath = '';
+  dlgRead_ctConf_fileName = 'dlgRead_extUsrOpts.ct';
+
 var
   dlgInfo : rec_dlgInfo;
   dlgDB : obj_condText;
@@ -208,6 +219,44 @@ var
 {
 |    -functions and procedures :
 }
+
+
+{|-procedure dlgRead_init :
+ |  -performs all initialization operations of the unit .
+ |  -internal procedures :|}
+procedure dlgRead_init;
+
+{|    -procedure ctConfig_iniGlobalOpts (globOptsNode : p_CTnode) :
+ |      -reads and applies global user options from a .ct file at
+ |       _ initialization time .
+ |      -intended to change the behaviour of the dlgRead unit without
+ |       _ recompiling .
+ |      -it is required a 'dlgRead_iniGlobalOptions' title node in the
+ |       _ .ct file specified by dlgRead_ctConf_fileName .
+ |      -field values (as count nodes) :
+ |        -"infoMsgName" :
+ |          -name for the 'dlgrl' object prepended to every log message .
+ |          -acceptable values :
+ |            - ;;
+ |        -"logOutputDevice" :- ;
+ |        -"logOutputLevel" :- ;;;|}
+  procedure ctConfig_iniGlobalOpts (globOptsNode : p_CTnode);
+    begin
+      
+    end;
+
+  begin
+{initialize unit log file}
+    dlgrl.init;
+    dlgrl.setInfoMsgName (dlgRead_name+'_v'+dlgRead_version);
+    dlgrl.setOutputLevel (c_outLvl_detailed);
+    dlgrl.setOutputDevice (c_outdev_screen,'','');
+{initialize unit records}
+    dlgInfo_recInit (dlgInfo);
+    dlgDB.init;
+{code for reading external user options}
+    ctConfig_iniGlobalOpts ()
+  end;
 
 {
 |-procedure dlgRead_scanDir (basePath : strToken; dlgDB : obj_condText); :
@@ -417,22 +466,6 @@ procedure dlgRead_test (testOpt: string);
             dlgrl.infoMsg (1,1,procName+'option not found.');
           end;
       end;
-  end;
-
-{|-procedure dlgRead_init :
- |  -performs all initialization operations of the unit ;}
-procedure dlgRead_init;
-  begin
-{initialize unit log file}
-    dlgrl.init;
-    dlgrl.setInfoMsgName (dlgRead_name+dlgRead_version);
-    dlgrl.setOutputLevel (c_outLvl_detailed);
-    dlgrl.setOutputDevice (c_outdev_screen,'','');
-{initialize unit records}
-    dlgInfo_recInit (dlgInfo);
-    dlgDB.init;
-{code for reading external user options}
-    
   end;
 
 {|-procedure dlgRead_finish :
