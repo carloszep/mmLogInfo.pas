@@ -189,7 +189,7 @@ procedure dlgReadFile (basePath,filePath,fileName: string;
 procedure dlgRead_test (testOpt: string);
 procedure dlgRead_init;
 procedure dlgRead_finish;
-procedure dlgRead_interpreter (usrCommands : objCondText; title : p_CTnode);
+procedure dlgRead_interpreter (usrCommands : obj_condText; title : p_CTnode);
 
 {
 |  -implementation section :
@@ -306,7 +306,7 @@ procedure dlgReadFile (basePath,filePath,fileName: string;
     dlgrl.infoMsg (0,3,'  filePath: '+filePath);
     dlgrl.infoMsg (0,3,'  basePath: '+basePath);
 {initializing dlgInfo record}
-    dlgInfo.recInit (dlgInfo);
+{    dlgInfo_recInit (dlgInfo);}
 
 {record input}
     dlgInfo.basePath := basePath;
@@ -314,8 +314,8 @@ procedure dlgReadFile (basePath,filePath,fileName: string;
     dlgInfo.dlgName := fileName;
 
 {openning and processing file}
-    assign (basePath+filePath+fileName, dlg);
-{$I-} reset (namdLog); {$I+}
+    assign (dlg, basePath+filePath+fileName);
+{$I-} reset (dlg); {$I+}
     if IOresult <> 0 then
       begin
         dlgrl.infoMsg (7,1,procName+'Error reading file: '+fileName);
@@ -326,9 +326,10 @@ procedure dlgReadFile (basePath,filePath,fileName: string;
         while not EoF(dlg) do
           begin
             readln (dlg, lline);
-            if pos('Docking parameter file (DPF) used', lline) > 0) then
+            if pos('Docking parameter file (DPF) used', lline) > 0 then
               begin
-                ltoken := ExtractWord(9, lline, [' ']);
+                dlgrl.infoMsg (0,3,'logLine: '+lline);
+                ltoken := ExtractWord(8, lline, [' ']);
                 dlgInfo.dpfName := ltoken;
                 dlgrl.infoMsg (0,3,'  DPF: '+ltoken);
                 if FileExists(basePath+filePath+dlgInfo.dpfName) then
@@ -343,36 +344,46 @@ procedure dlgReadFile (basePath,filePath,fileName: string;
               end
             else if pos('Grid Point Spacing =', lline) > 0 then
               begin
-                ltoken = ExtractWord(5, lline, [' ']);
+                dlgrl.infoMsg (0,3,'logLine: '+lline);
+                ltoken := ExtractWord(5, lline, [' ']);
                 dlgInfo.gridSpacing := ltoken;
                 dlgrl.infoMsg (0,3,'  grid point spacing: '+ltoken);
               end
             else if pos('x-points' , lline) > 0 then
               begin
-                ltoken := ExtractWord(8, lline, [' ']);
+                dlgrl.infoMsg (0,3,'logLine: '+lline);
+                ltoken := ExtractWord(7, lline, [' ']);
                 dlgInfo.gridXpoints := ltoken;
-                dlgrl.infoMsg (0,3,'  grid X-points: '+ltoken);
+                dlgrl.infoMsg (0,3,'  X grid points: '+ltoken);
               end
             else if pos('y-points' , lline) > 0 then
               begin
+                dlgrl.infoMsg (0,3,'logLine: '+lline);
                 ltoken := ExtractWord(1, lline, [' ']);
                 dlgInfo.gridYpoints := ltoken;
-                dlgrl.infoMsg (0,3,'  grid Y-points: '+ltoken);
+                dlgrl.infoMsg (0,3,'  Y grid points: '+ltoken);
               end
             else if pos('z-points' , lline) > 0 then
               begin
+                dlgrl.infoMsg (0,3,'logLine: '+lline);
                 ltoken := ExtractWord(1, lline, [' ']);
                 dlgInfo.gridZpoints := ltoken;
-                dlgrl.infoMsg (0,3,'  grid Z-points: '+ltoken);
+                dlgrl.infoMsg (0,3,'  Z grid points: '+ltoken);
               end
-            else if then
-            else if then
+            else if pos('DPF> ga_run', lline) > 0 then
+              begin
+                dlgrl.infoMsg (0,3,'logLine: '+lline);
+                ltoken := ExtractWord(3, lline, [' ']);
+                dlgInfo.ga_run := ltoken;
+                dlgrl.infoMsg (0,3,'  ga_run: '+ltoken);
+              end
             else
               begin
               end
           end;
       end;
-
+    dlgrl.infoMsg (0,2,procName+'Done.');
+    close (dlg);
   end;   {dlgReadFile}
 
 
@@ -380,7 +391,32 @@ procedure dlgReadFile (basePath,filePath,fileName: string;
 {|-procedure dlgRead_test (testOpt: string) :
  |  -performs unit tests ;}
 procedure dlgRead_test (testOpt: string);
+  var
+    procName : strToken;
+    basePath, filePath, fileName : strLogLine;
+
+  procedure test_dlgReadFile;
+    begin
+      dlgrl.infoMsg (0,1,'  performing test: dlgReadFile:');
+      basePath := '/Users/carloszep/Zep/Shared/GitHub/';
+      filePath := 'ksa-proy/ad4/cluster1/dock/cluster1/dlg/';
+      fileName := 'DHP-Br_cluster1.dlg';
+      dlgrl.infoMsg (0,2,'  basePath: '+basePath);
+      dlgrl.infoMsg (0,2,'  filePath: '+filePath);
+      dlgrl.infoMsg (0,2,'  fileName: '+fileName);
+      dlgReadFile (basePath, filePath, fileName, dlgInfo);
+    end;
+
   begin
+    procName := 'dlgRead_test: ';
+    dlgrl.infoMsg (0,1,procName+'Tests for unit dlgRead.');
+    case LowerCase(testOpt) of
+        'dlgreadfile' : test_dlgReadFile;
+        else
+          begin
+            dlgrl.infoMsg (1,1,procName+'option not found.');
+          end;
+      end;
   end;
 
 {|-procedure dlgRead_init :
@@ -390,9 +426,10 @@ procedure dlgRead_init;
 {initialize unit log file}
     dlgrl.init;
     dlgrl.setInfoMsgName (dlgRead_name+dlgRead_version);
+    dlgrl.setOutputLevel (c_outLvl_detailed);
     dlgrl.setOutputDevice (c_outdev_screen,'','');
 {initialize unit records}
-    dlgRead_recInit (dlgInfo);
+    dlgInfo_recInit (dlgInfo);
     dlgDB.init;
 {code for reading external user options}
     
@@ -406,10 +443,10 @@ procedure dlgRead_finish;
   end;
 
 {
-|-procedure dlgRead_interpreter (usrCommands: objCondText; title: p_CTnode); :
+|-procedure dlgRead_interpreter (usrCommands: obj_condText; title: p_CTnode); :
 |  - ;
 }
-procedure dlgRead_interpreter (usrCommands: objCondText; title: p_CTnode);
+procedure dlgRead_interpreter (usrCommands: obj_condText; title: p_CTnode);
   begin
   end;
 
