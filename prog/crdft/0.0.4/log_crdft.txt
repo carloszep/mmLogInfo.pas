@@ -1,0 +1,25 @@
+crdft-v.0.0.4: Info: crdft_init: Program log file initialized
+crdft-v.0.0.4: Info:   Initial Time: 15-1-18 22:25:04
+crdft-v.0.0.4: Info: setOutputLevel: Setting outputLevel to: 3
+crdft-v.0.0.4: Info: crdft_init: sending info messages from condText unit to the current log file
+crdft-v.0.0.4: Info: crdft_init: setting up default parameters.
+crdft-v.0.0.4: Info: crdft_init: datRhoN: Default file name: rhoN.asc
+crdft-v.0.0.4: Info: crdft_init: datRhoA: Default file name: rhoA.asc
+crdft-v.0.0.4: Info: crdft_init: datRhoC: Default file name: rhoC.asc
+crdft-v.0.0.4: Info: crdft_init: datEspN: Default file name: espN.asc
+crdft-v.0.0.4: Info: crdft_init: datEspA: Default file name: espA.asc
+crdft-v.0.0.4: Info: crdft_init: datEspC: Default file name: espC.asc
+crdft-v.0.0.4: Info: crdft_init: datDemonProp: Default file name: prop.asc
+crdft-v.0.0.4: Info: crdft_init: demonOut: Default file name: demon.out
+crdft-v.0.0.4: Info: crdft_init: scriptName: default file name: vmdPlot.tcl
+crdft-v.0.0.4: Info: crdft_init: outPrefix: default value: ""
+crdft-v.0.0.4: Info: crdft_init: xyzMolName: Default file name: mol.xyz
+crdft-v.0.0.4: Info: crdft_init: plotFunction: default value: ""
+crdft-v.0.0.4: Info: crdft_init: writeInpData: default value: True
+crdft-v.0.0.4: Info: crdft_init: writeTclScript: default value: True
+crdft-v.0.0.4: Info: crdft_init: propName: default value: prop
+crdft-v.0.0.4: Info: crdft_init: Command line: /home/carloszep/Zep/DocuAct/invest/freepascal/crdft004/crdft -h
+crdft-v.0.0.4: Info: crdft_init: ParamCount: 1
+crdft-v.0.0.4: Info: crdft_init: showing command-line help only.
+crdft-v.0.0.4: Info: crdft_finish: unlinking condText log file.
+crdft-v.0.0.4: Info: crdft_finish: ending program...
